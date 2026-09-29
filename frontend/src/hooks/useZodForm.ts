@@ -87,10 +87,14 @@ export function useZodForm<S extends z.ZodType>(options: {
     document.getElementById(fieldId(name))?.focus()
   }
 
+  function setValue(name: FieldName<S>, value: string) {
+    setValues((previous) => ({ ...previous, [name]: value }))
+  }
+
   function reset() {
     setValues(initialValues)
     setErrors({})
   }
 
-  return { values, errors, isSubmitting, fieldProps, handleSubmit, setFieldError, reset }
+  return { values, errors, isSubmitting, fieldProps, handleSubmit, setFieldError, setValue, reset }
 }

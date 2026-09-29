@@ -1,6 +1,6 @@
 # ADR 0006 — Número de tarjeta y CVV en la respuesta y en LocalStorage
 
-- **Estado**: Propuesto
+- **Estado**: Aceptado (2026-09-28)
 - **Fecha**: 2026-09-28
 - **Decide**: Luis Heredia
 - **Reemplaza**: —
@@ -43,3 +43,10 @@ Hay que cumplir el alcance sin normalizar una práctica insegura y sin exponer m
 | **Cumplir el requisito y limitar la exposición** | Cumple el alcance con el menor riesgo posible dentro de él | Datos sensibles (ficticios) en LocalStorage | ✅         |
 | Guardar el PAN enmascarado y omitir el CVV       | Correcto según PCI                                         | Incumple un requisito explícito             | Descartado |
 | Cifrar en LocalStorage con una llave del bundle  | Parece más seguro                                          | Es teatro: la llave está en el mismo bundle | ❌         |
+
+## Cómo quedó construido
+
+- El API devuelve `card_number` y `cvv` en eco, y el logger los redacta ([prueba](../../../api/test/feature/charges.test.ts)).
+- El frontend guarda la respuesta completa en `snail-race:v1:charges` ([prueba](../../../frontend/src/stores/wallet/wallet.test.ts)).
+- El historial de la pantalla de recarga muestra `•••• 1234` y nunca el CVV. El formulario borra el CVV después de cada respuesta y todos los datos después de un cobro aprobado ([prueba](../../../frontend/src/features/recharge/recharge.test.tsx)).
+- Un panel de "Tarjetas de prueba" recuerda en la interfaz que solo se usan datos ficticios.

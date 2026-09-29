@@ -1,4 +1,5 @@
-import { Wallet } from 'lucide-react'
+import { CreditCard, Wallet } from 'lucide-react'
+import { ButtonLink } from '../../../../../components/button'
 import { formatCents } from '../../../../../lib/money/money'
 import styles from './styles.module.sass'
 
@@ -14,6 +15,13 @@ export function BalanceCard({ balanceCents }: Readonly<{ balanceCents: number }>
       <p className={styles.hint}>
         {balanceCents === 0 ? 'Aún no tienes saldo. Recarga para empezar a apostar.' : 'MXN'}
       </p>
+      <ButtonLink
+        to="/recharge"
+        className={styles.action}
+        icon={<CreditCard aria-hidden="true" size={18} />}
+      >
+        Recargar saldo
+      </ButtonLink>
     </section>
   )
 }

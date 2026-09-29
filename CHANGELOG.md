@@ -2,6 +2,14 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — recarga con SnailPay
+
+- 💳 Recarga de punta a punta: formulario validado con los patrones del contrato, llamada a SnailPay con los datos del usuario, saldo actualizado de inmediato (también en el header) e historial con la tarjeta enmascarada.
+- 🛡️ Regla contra falsos éxitos aplicada en el monedero: cinco condiciones; un "aprobado" con otro monto o repetido no acredita.
+- ⏱️ Cada resultado tiene su mensaje: aprobado, rechazo por `status_detail`, error del sistema, timeout, sin red y respuesta inesperada. Recorrido en Chrome contra el API real (aprobada, `…0503`, `…0408`).
+- 🏛️ ADR 0006 **aceptado**. **Los 24 requisitos funcionales están terminados.**
+- **Reflejado en:** [estado](docs/01-alcance/estado.md) · [ADR 0006](docs/02-arquitectura/adr/0006-datos-de-tarjeta-en-respuesta-y-almacenamiento.md) · [pruebas](docs/05-calidad-y-pruebas/estrategia-de-pruebas.md)
+
 ## 2026-09-28 (noche) — corrección del tooltip de la dona
 
 - 🐛 El texto central de la dona ("75 % ganadas") se pintaba encima del tooltip y lo hacía parecer transparente. El tooltip ahora va en una capa superior, con un estilo compartido por las dos gráficas. Lo reportó la revisión del autor.

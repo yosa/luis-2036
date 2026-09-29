@@ -3,18 +3,19 @@
 > **Audiencia:** quien evalúa.
 > **Propósito:** tiempo aproximado invertido, por actividad. La referencia del encargo es de 6 a 8 horas para el alcance principal.
 
-| Fecha                  | Actividad                                                                             | Tiempo aprox. | Notas                                                                     |
-| ---------------------- | ------------------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------- |
-| 2026-09-28 19:23–19:35 | Análisis del enunciado y plan                                                         | 0 h 12 min    | Lectura del enunciado, decisiones de despliegue, estado y repositorio     |
-| 2026-09-28 19:35–19:52 | Estándares React y Express del ecosistema                                             | 0 h 17 min    | Inversión reutilizable fuera del alcance; se reporta aparte               |
-| 2026-09-28 19:52–20:24 | Organización del repo y documentación base                                            | 0 h 32 min    | Estructura, requisitos, ADR, contrato y escenarios, publicación en GitLab |
-| 2026-09-28 20:24–20:33 | Monorepo, contrato compartido y API de SnailPay con pruebas                           | 0 h 09 min    | Incluye elegir versiones compatibles (TypeScript 6, ESLint 9)             |
-| 2026-09-28 20:33–20:51 | Frontend: sistema visual con ui-ux-pro-max, base técnica y división en ramas pequeñas | 0 h 18 min    | Revisión en navegador después de cada rama                                |
-| 2026-09-28 20:51–20:55 | Puesta al día de la documentación                                                     | 0 h 04 min    |                                                                           |
-| 2026-09-28 20:55–21:00 | Colección Postman y Newman                                                            | 0 h 05 min    |                                                                           |
-| 2026-09-28 21:00–21:06 | Registro, login, sesión y guards, con pruebas y recorrido en Chrome                   | 0 h 06 min    |                                                                           |
-| 2026-09-28 21:06–21:14 | Dashboard: saldo, dona y barras, paleta validada, pruebas y revisión en Chrome        | 0 h 08 min    |                                                                           |
+| Fecha                  | Actividad                                                                                                                          | Tiempo aprox. | Notas                                                                     |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------- |
+| 2026-09-28 19:23–19:35 | Análisis del enunciado y plan                                                                                                      | 0 h 12 min    | Lectura del enunciado, decisiones de despliegue, estado y repositorio     |
+| 2026-09-28 19:35–19:52 | Estándares React y Express del ecosistema                                                                                          | 0 h 17 min    | Inversión reutilizable fuera del alcance; se reporta aparte               |
+| 2026-09-28 19:52–20:24 | Organización del repo y documentación base                                                                                         | 0 h 32 min    | Estructura, requisitos, ADR, contrato y escenarios, publicación en GitLab |
+| 2026-09-28 20:24–20:33 | Monorepo, contrato compartido y API de SnailPay con pruebas                                                                        | 0 h 09 min    | Incluye elegir versiones compatibles (TypeScript 6, ESLint 9)             |
+| 2026-09-28 20:33–20:51 | Frontend: sistema visual con ui-ux-pro-max, base técnica y división en ramas pequeñas                                              | 0 h 18 min    | Revisión en navegador después de cada rama                                |
+| 2026-09-28 20:51–20:55 | Puesta al día de la documentación                                                                                                  | 0 h 04 min    |                                                                           |
+| 2026-09-28 20:55–21:00 | Colección Postman y Newman                                                                                                         | 0 h 05 min    |                                                                           |
+| 2026-09-28 21:00–21:06 | Registro, login, sesión y guards, con pruebas y recorrido en Chrome                                                                | 0 h 06 min    |                                                                           |
+| 2026-09-28 21:06–21:14 | Dashboard: saldo, dona y barras, paleta validada, pruebas y revisión en Chrome                                                     | 0 h 08 min    |                                                                           |
+| 2026-09-28 21:14–21:25 | Recarga con SnailPay: formulario, acreditación segura, mensajes, pruebas y recorrido en Chrome (incluye la corrección del tooltip) | 0 h 11 min    |                                                                           |
 
 > Los tiempos salen de las marcas de tiempo de archivos y commits, así que son aproximados al minuto.
 
-**Total del alcance principal (sin estándares):** 1 h 34 min hasta ahora.
+**Total del alcance principal (sin estándares):** 1 h 45 min hasta ahora.

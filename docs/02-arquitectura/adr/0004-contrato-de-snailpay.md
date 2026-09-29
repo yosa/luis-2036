@@ -44,7 +44,7 @@ SnailPay simula una **pasarela de pagos externa**. El alcance fija los campos qu
 - El API arma **toda** respuesta de cobro con el mismo builder ([`service.ts`](../../../api/src/modules/snailpay/createCharge/service.ts)), incluidos los fallos fuera del caso de uso (JSON malformado, rate limit, 500) mediante `failure()`.
 - Las rutas de SnailPay tienen su propio parser y manejo de errores ([`routes/v1/snailpay.ts`](../../../api/src/routes/v1/snailpay.ts)) para no caer en el envelope.
 - Pruebas: [contrato en HTTP](../../../api/test/feature/charges.test.ts) y [service](../../../api/test/unit/createChargeService.test.ts).
-- La regla contra falsos éxitos del cliente (punto 4) se implementa en la feature de recarga.
+- La regla contra falsos éxitos del cliente (punto 4) está en [`lib/wallet/creditRules.ts`](../../../frontend/src/lib/wallet/creditRules.ts). La aplica `recordCharge` del monedero, que es la única operación que aumenta el saldo. El frontend valida también el cuerpo contra el contrato: un 201 sin los campos obligatorios se trata como respuesta inesperada ([prueba](../../../frontend/src/services/snailpay/snailpay.test.ts)).
 
 ## Pendientes
 
