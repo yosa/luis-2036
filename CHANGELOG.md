@@ -2,6 +2,10 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — corrección del tooltip de la dona
+
+- 🐛 El texto central de la dona ("75 % ganadas") se pintaba encima del tooltip y lo hacía parecer transparente. El tooltip ahora va en una capa superior, con un estilo compartido por las dos gráficas. Lo reportó la revisión del autor.
+
 ## 2026-09-28 (noche) — dashboard
 
 - 📊 Dashboard con saldo (cifra principal), dona de apuestas y barras de victorias por caracol; datos simulados y deterministas por usuario y día.

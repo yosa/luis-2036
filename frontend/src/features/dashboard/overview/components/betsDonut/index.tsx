@@ -1,5 +1,6 @@
 import { Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { ChartCard } from '../chartCard'
+import { chartTooltipProps } from '../chartCard/tooltipStyles'
 import styles from './styles.module.sass'
 
 type BetsDonutProps = { won: number; lost: number }
@@ -59,15 +60,7 @@ export function BetsDonut({ won, lost }: Readonly<BetsDonutProps>) {
                 strokeWidth={2}
                 isAnimationActive={false}
               />
-              <Tooltip
-                contentStyle={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border-strong)',
-                  borderRadius: 8,
-                  color: 'var(--text)',
-                }}
-                itemStyle={{ color: 'var(--text)' }}
-              />
+              <Tooltip {...chartTooltipProps} />
             </PieChart>
           </ResponsiveContainer>
           <p className={styles.center} aria-hidden="true">

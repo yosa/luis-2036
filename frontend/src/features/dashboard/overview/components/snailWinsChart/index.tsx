@@ -1,6 +1,7 @@
 import { Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import type { SnailWins } from '../../../../../lib/raceDay/raceDay'
 import { ChartCard } from '../chartCard'
+import { chartTooltipProps } from '../chartCard/tooltipStyles'
 
 type SnailWinsChartProps = { winsBySnail: SnailWins[]; racesCount: number }
 
@@ -53,13 +54,7 @@ export function SnailWinsChart({ winsBySnail, racesCount }: Readonly<SnailWinsCh
           <Tooltip
             cursor={{ fill: 'var(--surface-muted)' }}
             formatter={(value) => [value, 'Victorias']}
-            contentStyle={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border-strong)',
-              borderRadius: 8,
-              color: 'var(--text)',
-            }}
-            itemStyle={{ color: 'var(--text)' }}
+            {...chartTooltipProps}
           />
           <Bar
             dataKey="wins"
