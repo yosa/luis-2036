@@ -36,7 +36,7 @@ docs/04-diseno/          sistema visual y herramientas usadas
 docs/05-calidad-y-pruebas/ estrategia de pruebas
 docs/06-operacion/       ejecutar en local, despliegue
 docs/07-entrega/         uso de IA, tiempo, propuesta de BD, fuente del documento de respuesta
-scripts/                 check-referencias.sh
+scripts/                 check-referencias.sh, generar-pdf.sh, deploy-staging.sh (ver scripts/README.md)
 .private/                (ignorado) enunciado original, términos vetados, borradores
 ```
 
@@ -60,6 +60,7 @@ git config core.hooksPath .githooks   # una vez por clon: activa el hook de refe
 npm run dev                           # API :3000 + frontend :5173
 npm run check                         # type-check + lint + formato + pruebas (antes de cada commit)
 scripts/check-referencias.sh          # verificación manual de términos vetados
+scripts/generar-pdf.sh                # regenera el PDF del documento de respuesta (valida páginas y términos)
 ```
 
 ## Flujo de trabajo

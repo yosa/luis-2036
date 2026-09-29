@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa la entrega.
 > **Propósito:** la **única fuente de verdad** de qué está terminado. Una fila solo pasa a ✅ cuando tiene evidencia enlazada: una prueba automatizada o el archivo que la implementa. Se actualiza en el mismo commit que cambia el código.
-> **Última actualización:** 2026-09-28, 23:45. Todo terminado y publicado: aplicación en https://caracoles-staging.mangobinario.com y código en https://github.com/yosa/luis-2036. Pendiente: PDF de respuesta.
+> **Última actualización:** 2026-09-28, 23:48. **Entrega completa:** requisitos, adicionales, aplicación publicada, repositorio público y documento de respuesta.
 
 Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta) · ⏳ pendiente · ❌ fuera de alcance / no se hará
 
@@ -56,7 +56,7 @@ Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta
 | RNF-06 | Pruebas automatizadas                 | ✅     | 40 en API, 97 en frontend, 6 E2E con Cypress contra el build y Smoke de Postman ([estrategia](../05-calidad-y-pruebas/estrategia-de-pruebas.md))                                                                                                           |
 | RNF-07 | Errores y timeout                     | ✅     | Timeout real (API 12 s, cliente 8 s), sin red y respuesta fuera de contrato, cada uno con su mensaje ([recharge.test.tsx](../../frontend/src/features/recharge/recharge.test.tsx), [httpRequest.test.ts](../../frontend/src/lib/http/httpRequest.test.ts)) |
 | RNF-08 | Sin referencias identificables        | ✅     | `scripts/check-referencias.sh` + hook `pre-commit`                                                                                                                                                                                                         |
-| E-01   | PDF de respuesta                      | ⏳     | —                                                                                                                                                                                                                                                          |
+| E-01   | PDF de respuesta                      | ✅     | [documento-respuesta.pdf](../07-entrega/documento-respuesta.pdf) (4 páginas, Arial 10, sin código ni capturas) generado desde su [fuente](../07-entrega/documento-respuesta.md) con `scripts/generar-pdf.sh`                                               |
 | E-02   | Instrucciones para ejecutar           | ✅     | [ejecutar local](../06-operacion/ejecutar-local.md), comprobado con `npm run dev`                                                                                                                                                                          |
 | E-03   | Instrucciones de pruebas              | ✅     | [estrategia de pruebas](../05-calidad-y-pruebas/estrategia-de-pruebas.md#cómo-correrlas)                                                                                                                                                                   |
 | E-04   | Reproducir las respuestas de SnailPay | ✅     | [escenarios](../03-snailpay/escenarios.md) con `curl` y [colección Postman](../../api/postman/README.md) (Smoke con Newman: 98 aserciones)                                                                                                                 |

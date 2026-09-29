@@ -1,0 +1,108 @@
+/* Documento de respuesta: Arial 10 e interlineado estándar (requisito). La jerarquía se logra
+   con tamaño y peso en los títulos, un acento de color y espaciado, sin tocar el texto base. */
+@page {
+  size: Letter;
+  margin: 1.6cm 1.8cm 1.7cm;
+  @bottom-right {
+    content: 'Página ' counter(page) ' de ' counter(pages);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #475569;
+  }
+  @bottom-left {
+    content: 'Carreras de caracoles · documento de respuesta';
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #475569;
+  }
+}
+
+:root {
+  --ink: #0f172a;
+  --muted: #475569;
+  --accent: #15803d;
+  --accent-soft: #f0fdf4;
+  --rule: #cbd5e1;
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  line-height: normal;
+  color: var(--ink);
+}
+body {
+  margin: 0;
+}
+
+/* Encabezado */
+h1 {
+  font-size: 18pt;
+  margin: 0 0 2pt;
+  letter-spacing: -0.2pt;
+}
+h1 + p {
+  margin: 6pt 0 10pt;
+  padding: 6pt 8pt;
+  background: var(--accent-soft);
+  border-left: 3pt solid var(--accent);
+  color: var(--ink);
+}
+
+/* Secciones */
+h2 {
+  font-size: 12pt;
+  color: var(--accent);
+  margin: 10pt 0 4pt;
+  padding-bottom: 2pt;
+  border-bottom: 0.75pt solid var(--rule);
+  break-after: avoid;
+}
+p,
+li {
+  margin: 0 0 4pt;
+}
+ul,
+ol {
+  margin: 0 0 6pt;
+  padding-left: 15pt;
+}
+li::marker {
+  color: var(--accent);
+}
+strong {
+  color: var(--ink);
+}
+a {
+  color: var(--ink);
+  text-decoration: none;
+}
+code {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+}
+
+/* Resumen en cifras */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4pt 0 8pt;
+  break-inside: avoid;
+}
+th,
+td {
+  padding: 2pt 6pt;
+  border-bottom: 0.75pt solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  font-weight: bold;
+  color: var(--muted);
+  border-bottom: 1pt solid var(--ink);
+}
+td:first-child {
+  font-weight: bold;
+  white-space: nowrap;
+  width: 32%;
+}

@@ -29,7 +29,7 @@ Se revisa **sin credenciales**: basta con registrarse en la propia aplicación. 
 
 [`scripts/deploy-staging.sh`](../../scripts/deploy-staging.sh) construye y despliega el API, construye el sitio con la URL del API, lo sube a S3, invalida la caché y verifica `/v1/health` y `/dashboard`.
 
-Los datos de la infraestructura (perfil de AWS, bucket, distribución, configuración de Serverless) **no están en este repositorio**: el script los recibe por variables de entorno, documentadas en su encabezado.
+Los datos de la infraestructura (perfil de AWS, bucket, distribución, configuración de Serverless) **no están en este repositorio**: el script los recibe por variables de entorno, documentadas en [`scripts/README.md`](../../scripts/README.md).
 
 ## Consideraciones y limitaciones
 
