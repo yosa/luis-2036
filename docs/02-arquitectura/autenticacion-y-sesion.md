@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa la seguridad de la solución.
 > **Propósito:** cómo se registran los usuarios, cómo se guarda la contraseña, cómo funciona la sesión y qué límites tiene hacerlo todo en el navegador.
-> **Estado:** diseño propuesto, pendiente de implementar. Decisión formal en el [ADR 0003](adr/0003-tratamiento-de-la-contrasena.md).
+> **Estado:** implementado (2026-09-28). Decisión en el [ADR 0003](adr/0003-tratamiento-de-la-contrasena.md), aceptado. Código en [`stores/session`](../../frontend/src/stores/session/index.ts), [`features/auth`](../../frontend/src/features/auth/) y [`app/guards`](../../frontend/src/app/guards/index.tsx).
 
 ## Registro
 
@@ -21,7 +21,8 @@
 1. Se busca al usuario por el correo normalizado.
 2. Se deriva el hash de la contraseña capturada con la sal y las iteraciones **guardadas en ese usuario**, de modo que se puedan subir las iteraciones en el futuro sin romper las cuentas existentes.
 3. Se compara en **tiempo constante** (comparación byte a byte sin salida temprana).
-4. Si el correo no existe o la contraseña no coincide, el mensaje es el mismo: "Correo o contraseña incorrectos". Así no se enumeran cuentas.
+4. Si el correo no existe o la contraseña no coincide, el mensaje es el mismo: "Correo o contraseña incorrectos". Así no se enumeran cuentas. Con un correo inexistente se verifica contra un hash señuelo, para que la respuesta tampoco tarde distinto.
+5. Si se llegó al login desde una ruta protegida, tras entrar se vuelve a esa ruta.
 
 ## Sesión
 

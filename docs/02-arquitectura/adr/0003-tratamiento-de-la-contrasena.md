@@ -1,6 +1,6 @@
 # ADR 0003 — Tratamiento de la contraseña: PBKDF2 con Web Crypto
 
-- **Estado**: Propuesto
+- **Estado**: Aceptado (2026-09-28)
 - **Fecha**: 2026-09-28
 - **Decide**: Luis Heredia
 - **Reemplaza**: —
@@ -45,6 +45,13 @@ Detalle del flujo: [autenticación y sesión](../autenticacion-y-sesion.md).
 | bcrypt en JS                                  | Conocido                    | Lento en JS puro, bloquea el hilo y trunca a 72 bytes                                 | Descartado                                              |
 | SHA-256 sin sal                               | Trivial                     | Sin factor de trabajo; cae ante tablas precalculadas                                  | ❌                                                      |
 | Mandar la contraseña a Express para hashearla | Se parece a producción      | Contradice la simulación local del alcance y el hash terminaría igual en el navegador | Descartado                                              |
+
+## Cómo quedó construido
+
+- [`lib/crypto/password.ts`](../../../frontend/src/lib/crypto/password.ts): `hashPassword` y `verifyPassword` sobre `crypto.subtle`; comparación en tiempo constante.
+- [`stores/session`](../../../frontend/src/stores/session/index.ts): con un correo inexistente, el login verifica contra un **hash señuelo**, así tarda lo mismo que con uno registrado y no revela qué cuentas existen.
+- Verificado en el navegador real: el usuario guardado tiene `PBKDF2-SHA256`, 600 000 iteraciones y una sal de 16 bytes, y la contraseña no aparece en ningún valor de LocalStorage.
+- Pruebas: [hash](../../../frontend/src/lib/crypto/password.test.ts) y [sesión](../../../frontend/src/stores/session/session.test.ts).
 
 ## Pendientes
 
