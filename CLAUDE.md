@@ -64,4 +64,4 @@ scripts/check-referencias.sh          # verificación manual de términos vetado
 
 ## Flujo de trabajo
 
-Una rama por feature (`feat/…`, `docs/…`), con sus pruebas y **la actualización de `estado.md`, ADR, CHANGELOG y guías en la misma rama**. Antes del commit se muestra el diff y, si hay UI, se revisa en el navegador. Merge `--no-ff` a `main`.
+Una rama por feature (`feat/…`, `docs/…`), con sus pruebas y **la actualización de `estado.md`, ADR, CHANGELOG y guías en la misma rama**. Antes del commit se muestra el diff y, si hay UI, se revisa en el navegador. Merge `--no-ff` a `main`. `origin` tiene dos URLs de push (GitLab y GitHub público): `git push origin main` actualiza los dos, y como GitHub es público, nada que no pase el hook de referencias puede llegar ahí.

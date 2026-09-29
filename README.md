@@ -1,5 +1,7 @@
 # Carreras de caracoles
 
+**Aplicación:** https://caracoles-staging.mangobinario.com · **Código:** https://github.com/yosa/luis-2036
+
 Aplicación web de temática de apuestas en carreras de caracoles:
 
 - **Registro e inicio de sesión locales**, con un **dashboard** que muestra saldo, gráfica de apuestas ganadas y perdidas, y gráfica de victorias por caracol.
