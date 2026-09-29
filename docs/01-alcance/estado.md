@@ -62,7 +62,7 @@ Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta
 | E-04   | Reproducir las respuestas de SnailPay | ✅     | [escenarios](../03-snailpay/escenarios.md) con `curl` y [colección Postman](../../api/postman/README.md) (Smoke con Newman: 98 aserciones)                                                                                                                 |
 | E-05   | Repositorio público en GitHub         | ⏳     | —                                                                                                                                                                                                                                                          |
 | AD-01  | Aplicación desplegada                 | ⏳     | ADR 0008                                                                                                                                                                                                                                                   |
-| AD-02  | Propuesta de base de datos            | 🟡     | [propuesta](../07-entrega/propuesta-base-de-datos.md) en borrador                                                                                                                                                                                          |
+| AD-02  | Propuesta de base de datos            | ✅     | [propuesta](../07-entrega/propuesta-base-de-datos.md): PostgreSQL, 8 tablas con sus restricciones, acreditación transaccional y cambios en backend y frontend                                                                                              |
 
 ## Problemas conocidos
 
