@@ -2,6 +2,11 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-29 — catálogo de componentes público
+
+- 🧩 El catálogo de componentes pasa de `/dev/ui` (solo en desarrollo) a **/componentes**, público en la versión desplegada, para que quien evalúe pueda revisar el sistema visual. Se carga aparte (3 KB) y no agrega peso a la aplicación.
+- **Reflejado en:** [README](README.md) · [sistema visual](docs/04-diseno/sistema-visual.md) · [despliegue](docs/06-operacion/despliegue.md)
+
 ## 2026-09-28 (noche) — repositorio público
 
 - 🌐 Código publicado en **https://github.com/yosa/luis-2036** como espejo del repositorio de trabajo; cada push actualiza los dos.

@@ -6,10 +6,11 @@
 
 ## URLs
 
-| Pieza          | Plataforma                                         | URL                                                      |
-| -------------- | -------------------------------------------------- | -------------------------------------------------------- |
-| **Aplicación** | AWS S3 + CloudFront                                | **https://caracoles-staging.mangobinario.com**           |
-| API (SnailPay) | AWS Lambda (Node 22, arm64) + API Gateway HTTP API | https://api-caracoles-staging-us-east-1.mangobinario.com |
+| Pieza                   | Plataforma                                         | URL                                                      |
+| ----------------------- | -------------------------------------------------- | -------------------------------------------------------- |
+| **Aplicación**          | AWS S3 + CloudFront                                | **https://caracoles-staging.mangobinario.com**           |
+| Catálogo de componentes | AWS S3 + CloudFront (misma aplicación)             | https://caracoles-staging.mangobinario.com/componentes   |
+| API (SnailPay)          | AWS Lambda (Node 22, arm64) + API Gateway HTTP API | https://api-caracoles-staging-us-east-1.mangobinario.com |
 
 Se revisa **sin credenciales**: basta con registrarse en la propia aplicación. Las tarjetas de prueba aparecen en la pantalla de recarga.
 

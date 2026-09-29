@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien desarrolla o revisa `frontend/`.
 > **Propósito:** cómo se organiza el código del frontend y por qué.
-> **Estado:** base técnica y sistema visual implementados (2026-09-28): tokens, storage tipado, tema, cliente HTTP, componentes base, `useZodForm` y catálogo `/dev/ui`. Auth terminado (registro, login, sesión, guards y `AppShell`). Todas las pantallas terminadas: registro, login, dashboard y recarga.
+> **Estado:** base técnica y sistema visual implementados (2026-09-28): tokens, storage tipado, tema, cliente HTTP, componentes base, `useZodForm` y catálogo público `/componentes`. Auth terminado (registro, login, sesión, guards y `AppShell`). Todas las pantallas terminadas: registro, login, dashboard y recarga.
 > **Estándar que aplica:** mis estándares de código para React + Vite (y el núcleo común de frontend). Este documento solo registra lo propio del proyecto.
 
 ## Stack
@@ -13,7 +13,7 @@ React 19 · Vite 8 · TypeScript 6 strict · React Router 8 (modo librería) · 
 
 Leyenda: ✅ ya existe · ⏳ llega con su feature.
 
-- ✅ `app/`: router (agregador), `guards` (`ProtectedRoute`/`PublicOnlyRoute`), `appShell`, `centeredLayout`, `notFound`, `rootError` y `devCatalog` (solo en desarrollo).
+- ✅ `app/`: router (agregador), `guards` (`ProtectedRoute`/`PublicOnlyRoute`), `appShell`, `centeredLayout`, `notFound`, `rootError` y `componentCatalog` (ruta pública `/componentes`, cargada aparte).
 - ✅ `features/auth/` (registro, login, esquemas, rutas), `features/dashboard/overview` (saldo, dona y barras con `chartCard` accesible), `stores/wallet` (saldo que sigue a la sesión), `lib/raceDay`, `lib/money`, `stores/session`, `lib/crypto` y `storage/slots.ts` (usuarios y sesión).
 - ✅ `components/`: `button`, `textField`, `alert`, `themeToggle`, `brand`.
 - ✅ `hooks/useZodForm.ts`, `lib/http/`, `storage/createStorageSlot.ts`, `stores/theme/`, `constants/` y `styles/`.
