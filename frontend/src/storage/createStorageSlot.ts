@@ -1,7 +1,7 @@
 import type { z } from 'zod'
 
 /**
- * Único acceso a localStorage (estándar de React §Persistencia).
+ * Único acceso a localStorage (docs/02-arquitectura/persistencia-localstorage.md).
  * Leer = validar contra el esquema: un valor corrupto, de otra versión o
  * editado a mano vuelve al valor por defecto sin romper la app. Si el
  * navegador no permite localStorage (modo privado, cuota), se usa memoria.

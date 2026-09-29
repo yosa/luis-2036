@@ -2,29 +2,38 @@
 
 > **Audiencia:** quien despliega o revisa la versión publicada.
 > **Propósito:** cómo se publica la aplicación (adicional AD-01).
-> **Estado:** ⏳ pendiente. Decisión en el [ADR 0008](../02-arquitectura/adr/0008-despliegue.md).
+> **Estado:** publicado el 2026-09-28 y verificado de punta a punta (registro y recarga aprobada contra el API desplegado). Decisión en el [ADR 0008](../02-arquitectura/adr/0008-despliegue.md).
 
-## Resumen
+## URLs
 
-| Pieza    | Plataforma                                                           | URL            |
-| -------- | -------------------------------------------------------------------- | -------------- |
-| Frontend | AWS S3 + CloudFront (sitio estático de un repositorio privado) | ⟨por publicar⟩ |
-| API      | AWS Lambda + API Gateway (`serverless-http`)                         | ⟨por publicar⟩ |
+| Pieza          | Plataforma                                         | URL                                                      |
+| -------------- | -------------------------------------------------- | -------------------------------------------------------- |
+| **Aplicación** | AWS S3 + CloudFront                                | **https://caracoles-staging.mangobinario.com**           |
+| API (SnailPay) | AWS Lambda (Node 22, arm64) + API Gateway HTTP API | https://api-caracoles-staging-us-east-1.mangobinario.com |
 
-## Runbook (borrador)
+Se revisa **sin credenciales**: basta con registrarse en la propia aplicación. Las tarjetas de prueba aparecen en la pantalla de recarga.
 
-1. `npm run build --workspace api`: esbuild genera `api/dist/lambda.mjs`.
-2. `serverless deploy --stage staging`, con el `serverless.yml` de un repositorio privado. La función usa timeout de 20 s y `CORS_ORIGINS` con el dominio del sitio.
-3. `VITE_API_BASE_URL=<url-del-api> npm run build --workspace frontend`.
-4. `aws s3 sync frontend/dist s3://<bucket>/<carpeta>/ --delete` e invalidar CloudFront.
-5. Verificar por el recurso, no por el comando:
-   - registro, login y dashboard en la URL pública;
-   - un cobro aprobado y un rechazo desde la UI;
-   - la tarjeta `…0503` responde con error del sistema.
+## Cómo se implementó
+
+- **API:** el mismo `createApp` que corre en local se envuelve con `serverless-http` (`api/src/lambda.ts`) y se empaqueta con esbuild en un solo archivo, sin `node_modules`.
+  - Se despliega con Serverless Framework: función, HTTP API, dominio propio con certificado y registro DNS.
+  - El timeout de la función es de 20 s: mayor que la demora del escenario de timeout (12 s) y menor que el límite de API Gateway (29 s).
+- **Sitio:** el build de Vite se hornea con `VITE_API_BASE_URL` apuntando al API y se sube a S3.
+  - Los assets con hash llevan caché de un año; `index.html` va con `no-cache`.
+  - Una función de CloudFront resuelve el subdominio a su carpeta. Como es una SPA, **toda ruta sirve `index.html`**, así que recargar `/dashboard` no da 403.
+- **CORS:** el API solo acepta el origen del sitio publicado.
+- **Indexación:** la distribución responde `x-robots-tag: noindex`, así que la aplicación no aparece en buscadores.
+
+## Runbook
+
+[`scripts/deploy-staging.sh`](../../scripts/deploy-staging.sh) construye y despliega el API, construye el sitio con la URL del API, lo sube a S3, invalida la caché y verifica `/v1/health` y `/dashboard`.
+
+Los datos de la infraestructura (perfil de AWS, bucket, distribución, configuración de Serverless) **no están en este repositorio**: el script los recibe por variables de entorno, documentadas en su encabezado.
 
 ## Consideraciones y limitaciones
 
-- **Sin credenciales:** el sitio no usa Basic Auth, porque quien evalúa debe entrar directo.
-- **Arranque en frío:** el primer cobro después de un rato de inactividad tarda más.
-- **La caída por variable de entorno** no se puede activar desde la versión publicada; ahí se usa la tarjeta `…0503`.
-- **Los datos viven en el navegador de quien evalúa**; el despliegue no guarda nada.
+- **Arranque en frío:** el primer cobro después de un rato de inactividad tarda cerca de un segundo más.
+- **La caída por variable de entorno no se activa en la versión publicada** (`SNAILPAY_OUTAGE=false`). Ahí se usa la tarjeta `…0503`.
+- **Los datos viven en el navegador de quien evalúa:** la versión publicada no guarda nada en el servidor.
+- **Deploy manual**, sin CI de despliegue (ADR 0008).
+- **Costo en reposo de $0:** Lambda, API Gateway, S3 y CloudFront cobran por uso.

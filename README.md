@@ -7,7 +7,7 @@ Aplicación web de temática de apuestas en carreras de caracoles:
 
 Frontend en **React + TypeScript**, backend en **Express + TypeScript**, persistencia del usuario, la sesión y el saldo en **LocalStorage**.
 
-> **Estado (2026-09-28):** SnailPay (API) terminado y probado; registro, login y sesión terminados (mínimos de validez cumplidos). Todas las funcionalidades terminadas (registro, login, dashboard y recarga con SnailPay). Con pruebas unitarias, de integración, E2E y Smoke de Postman. En curso: documento de entrega y despliegue.
+> **Estado (2026-09-28):** funcionalidades terminadas y probadas (unitarias, integración, E2E y Smoke de Postman). **Publicada en https://caracoles-staging.mangobinario.com**: regístrate y recarga con las tarjetas de prueba que muestra la pantalla de recarga.
 > La matriz de lo terminado y lo pendiente vive en [`docs/01-alcance/estado.md`](docs/01-alcance/estado.md), y es la única fuente de verdad del avance.
 
 ## Inicio rápido

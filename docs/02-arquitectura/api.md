@@ -3,7 +3,7 @@
 > **Audiencia:** quien desarrolla o revisa `api/`.
 > **Propósito:** cómo se organiza el código del backend y por qué.
 > **Estado:** implementado (2026-09-28). 40 pruebas; ver [estrategia de pruebas](../05-calidad-y-pruebas/estrategia-de-pruebas.md).
-> **Estándar que aplica:** `estándar de Express` del ecosistema. Este documento solo registra lo propio del proyecto.
+> **Estándar que aplica:** mi estándar de código para APIs Express + TypeScript. Este documento solo registra lo propio del proyecto.
 
 ## Stack
 
@@ -41,7 +41,7 @@ Pruebas en `test/unit/` (escenarios, service, parseo) y `test/feature/` (HTTP co
 
 ## Decisiones propias del proyecto
 
-- **SnailPay responde con el contrato del proveedor, no con el envelope del ecosistema**, porque lo que se simula es una pasarela externa. **Toda** respuesta de `POST /v1/snailpay/charges` usa ese formato, incluidos el JSON malformado, el rate limit y un 500 inesperado, para que el cliente tenga un solo parser. Las demás rutas (404, `/v1/health`) usan el envelope. Ver [ADR 0004](adr/0004-contrato-de-snailpay.md).
+- **SnailPay responde con el contrato del proveedor, no con el envelope JSON común**, porque lo que se simula es una pasarela externa. **Toda** respuesta de `POST /v1/snailpay/charges` usa ese formato, incluidos el JSON malformado, el rate limit y un 500 inesperado, para que el cliente tenga un solo parser. Las demás rutas (404, `/v1/health`) usan el envelope. Ver [ADR 0004](adr/0004-contrato-de-snailpay.md).
 - **Sin estado en el servidor.** SnailPay no guarda cobros. Cada respuesta se calcula a partir de la entrada, del reloj y del generador de ids, ambos inyectados. Por eso las pruebas son deterministas y el despliegue en Lambda no necesita almacenamiento.
 - **Tiempo e ids inyectados** (`clock`, `idGenerator`) en el service, para probar el vencimiento de la tarjeta y la forma de la respuesta sin depender de la fecha real.
 - **El escenario de timeout** es una demora deliberada del servidor, mayor que el timeout del cliente ([ADR 0005](adr/0005-simulacion-de-fallos.md)). El timeout de la función Lambda debe ser mayor que esa demora.

@@ -2,6 +2,13 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — aplicación desplegada
+
+- 🚀 Adicional 1 terminado: **https://caracoles-staging.mangobinario.com** (S3 + CloudFront) con el API en AWS Lambda. Verificada de punta a punta.
+- 🛠️ `scripts/deploy-staging.sh` reproduce el deploy completo con su verificación. ADR 0008 **aceptado**.
+- 📮 El environment de Postman de staging apunta al API publicado.
+- **Reflejado en:** [despliegue](docs/06-operacion/despliegue.md) · [ADR 0008](docs/02-arquitectura/adr/0008-despliegue.md) · [estado](docs/01-alcance/estado.md)
+
 ## 2026-09-28 (noche) — propuesta de base de datos
 
 - 🗄️ Adicional 2 terminado: PostgreSQL serverless con Kysely, 8 tablas trazadas desde las claves actuales de LocalStorage, restricciones que protegen el saldo y acreditación en una transacción con `Idempotency-Key`.
@@ -42,7 +49,7 @@ Registro de cambios de la documentación y de las decisiones, en orden de fecha 
 
 ## 2026-09-28 (noche) — colección Postman de SnailPay
 
-- 📮 Colección y environments en `api/postman/` según el estándar del ecosistema, adaptado a una pasarela simulada (sin auth, sin tenant, sin sintético).
+- 📮 Colección y environments en `api/postman/` según mi estándar de colecciones Postman, adaptado a una pasarela simulada (sin auth, sin tenant, sin sintético).
 - ✅ Smoke con Newman: 13 requests y 98 aserciones en verde contra el API real. E-04 pasa a terminado.
 - **Reflejado en:** [escenarios](docs/03-snailpay/escenarios.md) · [estado](docs/01-alcance/estado.md) · [pruebas](docs/05-calidad-y-pruebas/estrategia-de-pruebas.md) · [ADR 0005](docs/02-arquitectura/adr/0005-simulacion-de-fallos.md)
 

@@ -24,12 +24,12 @@ La entrega es **un solo repositorio git** con frontend, backend y documentación
 
 ## Alternativas evaluadas
 
-| Opción                                     | Pros                                           | Contras                                   | Veredicto                    |
-| ------------------------------------------ | ---------------------------------------------- | ----------------------------------------- | ---------------------------- |
-| **npm workspaces**                         | Nativo, sin herramientas extra                 | Menos eficiente en disco que pnpm         | ✅                           |
-| pnpm workspaces                            | Rápido y estricto; es el que usa el ecosistema | Obliga a quien evalúa a instalarlo        | Descartado para esta entrega |
-| Dos carpetas independientes sin workspaces | Simple                                         | Dos instalaciones y el contrato duplicado | Descartado                   |
-| Turborepo / Nx                             | Caché de tareas                                | Sobredimensionado para dos paquetes       | Descartado                   |
+| Opción                                     | Pros                                                | Contras                                   | Veredicto                    |
+| ------------------------------------------ | --------------------------------------------------- | ----------------------------------------- | ---------------------------- |
+| **npm workspaces**                         | Nativo, sin herramientas extra                      | Menos eficiente en disco que pnpm         | ✅                           |
+| pnpm workspaces                            | Rápido y estricto; es el que uso en otros proyectos | Obliga a quien evalúa a instalarlo        | Descartado para esta entrega |
+| Dos carpetas independientes sin workspaces | Simple                                              | Dos instalaciones y el contrato duplicado | Descartado                   |
+| Turborepo / Nx                             | Caché de tareas                                     | Sobredimensionado para dos paquetes       | Descartado                   |
 
 ## Cómo quedó construido
 
