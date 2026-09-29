@@ -11,3 +11,18 @@ export const SESSION_TTL_MS = 8 * 60 * 60 * 1000
 
 /** Mínimo recomendado por OWASP para PBKDF2-HMAC-SHA256 (ADR 0003). */
 export const PASSWORD_HASH_ITERATIONS = 600_000
+
+export const LOCALE = 'es-MX'
+export const CURRENCY = 'MXN'
+
+/** Los seis caracoles del día simulado (ADR 0007). El id es estable; el nombre, de interfaz. */
+export const SNAILS = [
+  { id: 'rayo', name: 'Rayo Baboso' },
+  { id: 'turbo', name: 'Turbo Concha' },
+  { id: 'lentitud', name: 'Doña Lentitud' },
+  { id: 'flash', name: 'Flash Viscoso' },
+  { id: 'capitan', name: 'Capitán Caparazón' },
+  { id: 'veloz', name: 'La Veloz Babosa' },
+] as const
+
+export const RACES_PER_DAY = 6

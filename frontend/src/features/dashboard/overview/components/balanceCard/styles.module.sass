@@ -1,0 +1,27 @@
+@use '../../../../../styles/mixins' as m
+
+.card
+  @include m.card
+  display: flex
+  flex-direction: column
+  gap: var(--space-2)
+  padding: var(--space-5)
+  align-self: start
+
+.label
+  display: flex
+  align-items: center
+  gap: var(--space-2)
+  font-family: var(--font-body)
+  font-size: 1rem
+  font-weight: 700
+  color: var(--text-muted)
+
+.amount
+  font-size: clamp(2.5rem, 6vw, 3.5rem)
+  font-weight: 800
+  line-height: 1.1
+  letter-spacing: -0.02em
+
+.hint
+  color: var(--text-muted)

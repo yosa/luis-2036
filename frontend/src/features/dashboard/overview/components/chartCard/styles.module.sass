@@ -1,0 +1,50 @@
+@use '../../../../../styles/mixins' as m
+
+.card
+  @include m.card
+  margin: 0
+  display: flex
+  flex-direction: column
+  gap: var(--space-4)
+  padding: var(--space-5)
+  min-width: 0
+
+.caption
+  display: flex
+  flex-direction: column
+  gap: var(--space-1)
+
+.title
+  font-size: 1.125rem
+
+.summary
+  color: var(--text-muted)
+
+.chart
+  min-height: 240px
+
+.details
+  color: var(--text-muted)
+  font-size: 0.9375rem
+
+  summary
+    cursor: pointer
+    min-height: 44px
+    display: flex
+    align-items: center
+    font-weight: 600
+    color: var(--text)
+
+  table
+    width: 100%
+    border-collapse: collapse
+    margin-top: var(--space-2)
+
+  th, td
+    padding: var(--space-2)
+    border-bottom: 1px solid var(--border)
+    text-align: left
+
+  td:last-child, th:last-child
+    text-align: right
+    font-variant-numeric: tabular-nums

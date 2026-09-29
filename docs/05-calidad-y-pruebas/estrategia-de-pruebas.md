@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa las pruebas y quien las corre.
 > **Propósito:** qué se prueba, **por qué se eligió** y cómo se ejecuta (RNF-06, E-03).
-> **Estado:** 88 pruebas implementadas (40 en el API, 48 en el frontend) más el Smoke de Postman. La tabla "Qué se prueba" es el plan completo; "Pruebas implementadas" dice qué existe hoy.
+> **Estado:** 104 pruebas implementadas (40 en el API, 64 en el frontend) más el Smoke de Postman. La tabla "Qué se prueba" es el plan completo; "Pruebas implementadas" dice qué existe hoy.
 
 ## Criterio
 

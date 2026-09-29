@@ -40,3 +40,11 @@ a
   *, *::before, *::after
     animation-duration: 0.01ms !important
     transition-duration: 0.01ms !important
+
+// Recharts enfoca el <svg> para navegar la gráfica con teclado: se usa el
+// anillo de la casa solo con teclado y ningún contorno al usar el mouse.
+.recharts-surface:focus:not(:focus-visible)
+  outline: none
+
+.recharts-surface:focus-visible
+  @include m.focus-ring
