@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa la entrega.
 > **Propósito:** la **única fuente de verdad** de qué está terminado. Una fila solo pasa a ✅ cuando tiene evidencia enlazada: una prueba automatizada o el archivo que la implementa. Se actualiza en el mismo commit que cambia el código.
-> **Última actualización:** 2026-09-28, 22:35. Todo terminado, desplegado en https://caracoles-staging.mangobinario.com y con los dos adicionales. Pendientes: repositorio público en GitHub y PDF de respuesta.
+> **Última actualización:** 2026-09-28, 23:45. Todo terminado y publicado: aplicación en https://caracoles-staging.mangobinario.com y código en https://github.com/yosa/luis-2036. Pendiente: PDF de respuesta.
 
 Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta) · ⏳ pendiente · ❌ fuera de alcance / no se hará
 
@@ -60,7 +60,7 @@ Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta
 | E-02   | Instrucciones para ejecutar           | ✅     | [ejecutar local](../06-operacion/ejecutar-local.md), comprobado con `npm run dev`                                                                                                                                                                          |
 | E-03   | Instrucciones de pruebas              | ✅     | [estrategia de pruebas](../05-calidad-y-pruebas/estrategia-de-pruebas.md#cómo-correrlas)                                                                                                                                                                   |
 | E-04   | Reproducir las respuestas de SnailPay | ✅     | [escenarios](../03-snailpay/escenarios.md) con `curl` y [colección Postman](../../api/postman/README.md) (Smoke con Newman: 98 aserciones)                                                                                                                 |
-| E-05   | Repositorio público en GitHub         | ⏳     | —                                                                                                                                                                                                                                                          |
+| E-05   | Repositorio público en GitHub         | ✅     | **https://github.com/yosa/luis-2036** (espejo de GitLab: cada push va a los dos)                                                                                                                                                                           |
 | AD-01  | Aplicación desplegada                 | ✅     | **https://caracoles-staging.mangobinario.com**: AWS Lambda + S3/CloudFront; verificada de punta a punta ([despliegue](../06-operacion/despliegue.md))                                                                                                      |
 | AD-02  | Propuesta de base de datos            | ✅     | [propuesta](../07-entrega/propuesta-base-de-datos.md): PostgreSQL, 8 tablas con sus restricciones, acreditación transaccional y cambios en backend y frontend                                                                                              |
 

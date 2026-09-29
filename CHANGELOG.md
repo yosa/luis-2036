@@ -2,6 +2,12 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — repositorio público
+
+- 🌐 Código publicado en **https://github.com/yosa/luis-2036** como espejo del repositorio de trabajo; cada push actualiza los dos.
+- 🧹 Antes de publicar, el historial se reescribió para quitar referencias a rutas, repositorios y herramientas internas (sin cambiar el árbol de `HEAD` ni la estructura de commits). Los términos vetados del hook se ampliaron con identificadores de infraestructura.
+- **Reflejado en:** [estado](docs/01-alcance/estado.md) · [README](README.md)
+
 ## 2026-09-28 (noche) — aplicación desplegada
 
 - 🚀 Adicional 1 terminado: **https://caracoles-staging.mangobinario.com** (S3 + CloudFront) con el API en AWS Lambda. Verificada de punta a punta.
