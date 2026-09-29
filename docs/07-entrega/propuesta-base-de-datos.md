@@ -2,17 +2,17 @@
 
 > **Audiencia:** quien evalúa el adicional AD-02.
 > **Propósito:** cómo pasaría la aplicación de LocalStorage a una base de datos. **No se implementa.**
-> **Estado:** borrador. Se revisa al terminar el desarrollo para que coincida con el modelo real.
+> **Estado:** final (2026-09-28). Parte del modelo que hoy vive en `frontend/src/storage/slots.ts`.
 
 ## Tecnología
 
-**PostgreSQL** (por ejemplo, Neon en su modo serverless, que ya se usa en el ecosistema):
+**PostgreSQL**, en modo serverless (Neon) para que encaje con el API en AWS Lambda:
 
-- un saldo es un dato transaccional y necesita ACID;
-- las relaciones entre usuario, cobros y apuestas son claras;
-- `NUMERIC` o enteros en centavos evitan los errores de redondeo.
+- Un saldo es un dato transaccional: necesita ACID, restricciones y bloqueos de fila.
+- Las relaciones (usuario → cobros → movimientos) son relacionales por naturaleza.
+- Los montos se guardan como **enteros en centavos**, igual que hoy en el frontend.
 
-El acceso desde Express iría con un query builder tipado (Kysely o Drizzle) y migraciones versionadas.
+Desde Express: un query builder tipado (**Kysely**) con migraciones versionadas en el repo, y el driver serverless de Neon (conexiones por HTTP/WebSocket) para no agotar conexiones con cada invocación de Lambda.
 
 ## Qué se almacena y cómo se relaciona
 
@@ -23,35 +23,41 @@ erDiagram
   WALLETS ||--o{ LEDGER_ENTRIES : registra
   USERS ||--o{ CHARGES : paga
   CHARGES ||--o| LEDGER_ENTRIES : acredita
-  SNAILS ||--o{ RACE_ENTRIES : corre
-  RACES ||--o{ RACE_ENTRIES : incluye
+  RACES }o--|| SNAILS : gana
   USERS ||--o{ BETS : hace
   RACES ||--o{ BETS : sobre
   SNAILS ||--o{ BETS : por
 ```
 
-| Tabla                    | Campos clave                                                                                                                                                           | Notas                                                            |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `users`                  | `id` (uuid), `full_name`, `email` (único, normalizado), `password_hash` (Argon2id), `created_at`                                                                       | El hash se calcula en el servidor                                |
-| `sessions`               | `id`, `user_id`, `expires_at`, `revoked_at`                                                                                                                            | Se identifica por una cookie `HttpOnly`                          |
-| `wallets`                | `user_id` (PK), `balance_cents`                                                                                                                                        | El saldo es una **proyección** del libro                         |
-| `ledger_entries`         | `id`, `wallet_id`, `amount_cents` (±), `kind` (`recharge`, `bet`, `payout`), `charge_id`, `created_at`                                                                 | Libro contable inmutable: el saldo es la suma de sus movimientos |
-| `charges`                | `id`, `user_id`, `status`, `status_detail`, `amount_cents`, `authorization_code`, `reference`, `card_brand`, `card_last_four`, `idempotency_key` (único), `created_at` | **Sin PAN completo ni CVV** (ADR 0006)                           |
-| `snails`                 | `id`, `name`                                                                                                                                                           | Catálogo                                                         |
-| `races` / `race_entries` | `id`, `scheduled_at`, `winner_snail_id` / `race_id`, `snail_id`, `position`                                                                                            | Carreras reales en lugar de simuladas                            |
-| `bets`                   | `id`, `user_id`, `race_id`, `snail_id`, `amount_cents`, `result`                                                                                                       | Alimenta el donut                                                |
+| Tabla            | Hoy vive en                     | Campos clave                                                                                                                                                      | Restricciones que importan                                                                      |
+| ---------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `users`          | `snail-race:v1:users`           | `id` uuid, `full_name`, `email`, `password_hash`, `created_at`                                                                                                    | `email` único y normalizado; hash **Argon2id** calculado en el servidor                         |
+| `sessions`       | `snail-race:v1:session`         | `id`, `user_id`, `expires_at`, `revoked_at`                                                                                                                       | Se identifica por una cookie `HttpOnly` + `Secure` + `SameSite`                                 |
+| `wallets`        | `snail-race:v1:wallets`         | `user_id` (PK), `balance_cents`                                                                                                                                   | `CHECK (balance_cents >= 0)`; es una proyección del libro                                       |
+| `ledger_entries` | — (hoy solo `appliedChargeIds`) | `id`, `wallet_id`, `amount_cents` (±), `kind` (`recharge`, `bet`, `payout`), `charge_id`, `created_at`                                                            | Inmutable; `charge_id` **único**: un cobro no puede acreditarse dos veces                       |
+| `charges`        | `snail-race:v1:charges`         | `id` (el de SnailPay), `user_id`, `status`, `status_detail`, `amount_cents`, `authorization_code`, `reference`, `card_last_four`, `idempotency_key`, `created_at` | **Sin PAN completo ni CVV** (ADR 0006); `idempotency_key` único; índice `(user_id, created_at)` |
+| `snails`         | constante `SNAILS`              | `id`, `name`                                                                                                                                                      | Catálogo de 6                                                                                   |
+| `races`          | generado (ADR 0007)             | `id`, `race_date`, `number`, `winner_snail_id`                                                                                                                    | Único `(race_date, number)`; `number` entre 1 y 6                                               |
+| `bets`           | generado (ADR 0007)             | `id`, `user_id`, `race_id`, `snail_id`, `amount_cents`, `result`                                                                                                  | Una apuesta por usuario y carrera; alimenta la dona                                             |
+
+## Cómo se acredita una recarga
+
+En una sola transacción del servidor, que sustituye a la regla contra falsos éxitos que hoy aplica el navegador:
+
+1. El frontend pide el cobro al **backend** (no a SnailPay directo), con un `Idempotency-Key`.
+2. El backend llama a SnailPay y guarda el cobro en `charges`, con el resultado que sea.
+3. Solo si el resultado es `approved` y el monto coincide: inserta el movimiento en `ledger_entries` y hace `UPDATE wallets SET balance_cents = balance_cents + $1` sobre la fila bloqueada (`SELECT … FOR UPDATE`).
+4. Un reintento con la misma llave, o una respuesta repetida, choca con las restricciones únicas y no acredita dos veces.
 
 ## Cambios necesarios
 
-**Backend**:
+**Backend:** módulos nuevos `auth` (registro, login, sesión), `wallet` (saldo y libro) y `races`. SnailPay pasa a ser un adapter del backend. El saldo, la sesión y las contraseñas dejan de vivir en el cliente, y el hash se hace en el servidor.
 
-- módulos nuevos `auth` (registro, login, sesión), `wallet` (saldo y libro) y `races`;
-- SnailPay notificaría el resultado por un **webhook firmado** y el backend acreditaría el saldo en una transacción (cobro + movimiento + saldo), con `idempotency_key` para no acreditar dos veces;
-- el estado deja de vivir en el cliente.
+**Frontend:**
 
-**Frontend**:
+- Los stores (`session`, `wallet`) dejan de leer `storage/` y consultan el API mediante sus services.
+- La sesión viaja en una cookie, así que desaparece el slot de sesión.
+- El formulario de tarjeta se tokeniza con el SDK de la pasarela, de modo que el PAN y el CVV no pasan por nuestro backend.
+- LocalStorage queda solo para preferencias, como el tema.
 
-- los stores dejan de leer LocalStorage y consultan el API;
-- la sesión pasa a una cookie `HttpOnly`;
-- el formulario de tarjeta se tokeniza con el SDK de la pasarela;
-- LocalStorage queda solo para preferencias (tema).
+Los datos de LocalStorage no se migran: son de una simulación local.

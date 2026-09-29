@@ -16,7 +16,8 @@
 | 2026-09-28 21:06–21:14 | Dashboard: saldo, dona y barras, paleta validada, pruebas y revisión en Chrome                                                     | 0 h 08 min    |                                                                           |
 | 2026-09-28 21:14–21:25 | Recarga con SnailPay: formulario, acreditación segura, mensajes, pruebas y recorrido en Chrome (incluye la corrección del tooltip) | 0 h 11 min    |                                                                           |
 | 2026-09-28 22:09–22:14 | E2E con Cypress contra el build y canario del gate                                                                                 | 0 h 05 min    |                                                                           |
+| 2026-09-28 22:15–22:20 | Propuesta de base de datos (adicional 2)                                                                                           | 0 h 05 min    |                                                                           |
 
 > Los tiempos salen de las marcas de tiempo de archivos, commits y del reloj del sistema, así que son aproximados al minuto. Se cuenta solo el tiempo de trabajo: las esperas de revisión y aprobación entre ramas no se suman.
 
-**Total del alcance principal (sin estándares):** 1 h 50 min hasta ahora.
+**Total del alcance principal (sin estándares):** 1 h 55 min hasta ahora.

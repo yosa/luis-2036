@@ -2,6 +2,11 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — propuesta de base de datos
+
+- 🗄️ Adicional 2 terminado: PostgreSQL serverless con Kysely, 8 tablas trazadas desde las claves actuales de LocalStorage, restricciones que protegen el saldo y acreditación en una transacción con `Idempotency-Key`.
+- **Reflejado en:** [propuesta](docs/07-entrega/propuesta-base-de-datos.md) · [estado](docs/01-alcance/estado.md)
+
 ## 2026-09-28 (noche) — E2E con Cypress
 
 - 🧪 6 pruebas E2E contra el build de producción: los cuatro mínimos de validez, persistencia al recargar, guard y recarga (aprobada, rechazada y timeout real). Selección por label y rol. El gate se verificó con un canario que falla.
