@@ -1,0 +1,38 @@
+{
+  "name": "snail-race",
+  "private": true,
+  "description": "Carreras de caracoles: registro local, dashboard y recarga de saldo con la pasarela simulada SnailPay",
+  "type": "module",
+  "packageManager": "npm@10.9.7",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "workspaces": [
+    "shared",
+    "api",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"npm run dev -w @snail-race/api\" \"npm run dev -w @snail-race/web\"",
+    "build": "npm run build -w @snail-race/api && npm run build -w @snail-race/web",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e -w @snail-race/web",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "lint": "eslint .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "check": "npm run type-check && npm run lint && npm run format && npm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "concurrently": "^10.0.5",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-sonarjs": "^4.2.2",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.9",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.0"
+  }
+}

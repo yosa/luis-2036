@@ -1,0 +1,15 @@
+{
+  "name": "@snail-race/shared",
+  "private": true,
+  "description": "Contrato compartido entre api y frontend (esquemas zod de SnailPay)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  }
+}
