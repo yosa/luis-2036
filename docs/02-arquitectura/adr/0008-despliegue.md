@@ -23,22 +23,24 @@ El adicional 1 pide publicar la aplicación con una URL pública que se pueda re
 ## Consecuencias
 
 **Positivas**:
+
 - Usa infraestructura que ya existe y se conoce.
 - El costo es de $0 en reposo.
 - La misma `createApp` corre en local y en Lambda.
 
 **Negativas / costos**:
+
 - El deploy es manual.
 - El primer request de Lambda tiene arranque en frío.
 - El subdominio queda bajo el dominio del proveedor, no bajo uno neutral.
 
 ## Alternativas evaluadas
 
-| Opción | Pros | Contras | Veredicto |
-|---|---|---|---|
-| **Lambda + S3/CloudFront del ecosistema** | Infraestructura conocida, costo cero en reposo | Deploy manual; `serverless.yml` a mano | ✅ |
-| Render / Railway (API) + Vercel / Netlify (frontend) | Deploy desde GitHub en minutos | Dos plataformas nuevas fuera del ecosistema | Descartado |
-| Servir el frontend desde Express en un solo servicio | Un solo deploy | Mezcla responsabilidades y obliga a tener un servidor siempre activo | Descartado |
+| Opción                                               | Pros                                           | Contras                                                              | Veredicto  |
+| ---------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------- | ---------- |
+| **Lambda + S3/CloudFront del ecosistema**            | Infraestructura conocida, costo cero en reposo | Deploy manual; `serverless.yml` a mano                               | ✅         |
+| Render / Railway (API) + Vercel / Netlify (frontend) | Deploy desde GitHub en minutos                 | Dos plataformas nuevas fuera del ecosistema                          | Descartado |
+| Servir el frontend desde Express en un solo servicio | Un solo deploy                                 | Mezcla responsabilidades y obliga a tener un servidor siempre activo | Descartado |
 
 ## Pendientes
 

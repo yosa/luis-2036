@@ -23,6 +23,7 @@ El alcance deja al proyecto decidir **qué errores de transacción simular**. Ad
    - JSON malformado
 
    Todos cubren fallos que un usuario real puede provocar y que exigen un mensaje distinto.
+
 3. **Error del sistema por dos vías**:
    - `SNAILPAY_OUTAGE=true` apaga el servicio completo. Es para probar en local y se aplica **antes** de validar, porque un servicio caído no valida.
    - La tarjeta `4000000000000503`, que funciona en la versión desplegada. `4000000000000500` simula una falla interna.
@@ -33,23 +34,25 @@ El alcance deja al proyecto decidir **qué errores de transacción simular**. Ad
 ## Consecuencias
 
 **Positivas**:
+
 - Cada escenario se reproduce con datos, desde la UI o con `curl`, local o desplegado.
 - El timeout se prueba de punta a punta.
 - Ningún escenario de fallo puede terminar en saldo acreditado.
 
 **Negativas / costos**:
+
 - El escenario de timeout ocupa una conexión 12 s. Se mitiga con rate limit.
 - En Lambda, el timeout de la función debe ser mayor que 12 s ([ADR 0008](0008-despliegue.md)).
 
 ## Alternativas evaluadas
 
-| Opción | Pros | Contras | Veredicto |
-|---|---|---|---|
-| **Tarjetas mágicas + variable de entorno** | Reproducible local y desplegado; como las pasarelas reales | Hay que documentar la tabla | ✅ |
-| Solo variable de entorno | Simple | No se puede reproducir en la versión desplegada | Descartado como única vía |
-| Encabezado `X-Simulate` | Flexible | La UI no lo manda; quien evalúa necesitaría herramientas | Descartado |
-| Fallos aleatorios (p. ej. el 10 %) | "Realista" | No es reproducible ni se puede probar | ❌ |
-| Timeout simulado solo en el cliente | Rápido | No prueba la cancelación real de la petición | Descartado |
+| Opción                                     | Pros                                                       | Contras                                                  | Veredicto                 |
+| ------------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------------- | ------------------------- |
+| **Tarjetas mágicas + variable de entorno** | Reproducible local y desplegado; como las pasarelas reales | Hay que documentar la tabla                              | ✅                        |
+| Solo variable de entorno                   | Simple                                                     | No se puede reproducir en la versión desplegada          | Descartado como única vía |
+| Encabezado `X-Simulate`                    | Flexible                                                   | La UI no lo manda; quien evalúa necesitaría herramientas | Descartado                |
+| Fallos aleatorios (p. ej. el 10 %)         | "Realista"                                                 | No es reproducible ni se puede probar                    | ❌                        |
+| Timeout simulado solo en el cliente        | Rápido                                                     | No prueba la cancelación real de la petición             | Descartado                |
 
 ## Pendientes
 

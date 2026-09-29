@@ -20,21 +20,21 @@
 
 ## Pantallas
 
-| Pantalla | Contenido mínimo |
-|---|---|
-| Registro | Nombre, correo, contraseña y confirmación; validación en línea; enlace a login |
-| Login | Correo y contraseña; mensaje de error genérico; enlace a registro |
+| Pantalla  | Contenido mínimo                                                                                                                |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Registro  | Nombre, correo, contraseña y confirmación; validación en línea; enlace a login                                                  |
+| Login     | Correo y contraseña; mensaje de error genérico; enlace a registro                                                               |
 | Dashboard | Saludo con el nombre, tarjeta de saldo con botón de recarga, donut de apuestas, barras de victorias por caracol y cerrar sesión |
-| Recarga | Formulario de tarjeta y monto, aviso de datos ficticios, y los estados enviando / aprobado / rechazado / error / timeout |
+| Recarga   | Formulario de tarjeta y monto, aviso de datos ficticios, y los estados enviando / aprobado / rechazado / error / timeout        |
 
 ## Herramientas y origen de cada parte
 
 > Se llena conforme avanza el trabajo. Es la fuente de la sección "Herramientas, librerías y plantillas" del documento de respuesta.
 
-| Parte | Herramienta o base | Generado / tomado como base / construido | Notas |
-|---|---|---|---|
-| Paleta y tipografía | ⟨por definir⟩ (p. ej. el plugin `ui-ux-pro-max`) | ⟨por definir⟩ | |
-| Tokens y modo claro/oscuro | Estándar del ecosistema | ⟨por definir⟩ | |
-| Componentes de formulario | ⟨por definir⟩ | ⟨por definir⟩ | |
-| Gráficas | Recharts | Librería configurada con los tokens | |
-| Layout del dashboard | ⟨por definir⟩ | ⟨por definir⟩ | |
+| Parte                      | Herramienta o base                               | Generado / tomado como base / construido | Notas |
+| -------------------------- | ------------------------------------------------ | ---------------------------------------- | ----- |
+| Paleta y tipografía        | ⟨por definir⟩ (p. ej. el plugin `ui-ux-pro-max`) | ⟨por definir⟩                            |       |
+| Tokens y modo claro/oscuro | Estándar del ecosistema                          | ⟨por definir⟩                            |       |
+| Componentes de formulario  | ⟨por definir⟩                                    | ⟨por definir⟩                            |       |
+| Gráficas                   | Recharts                                         | Librería configurada con los tokens      |       |
+| Layout del dashboard       | ⟨por definir⟩                                    | ⟨por definir⟩                            |       |

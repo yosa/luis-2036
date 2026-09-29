@@ -21,11 +21,11 @@ flowchart LR
   UI -- "POST /v1/snailpay/charges<br/>(fetch con timeout)" --> API
 ```
 
-| Pieza | Responsabilidad | No hace |
-|---|---|---|
-| `frontend/` | Registro y login locales, sesión, dashboard, gráficas, formulario de recarga y aplicar el saldo cuando un cobro es aprobado. | No decide si un cobro se aprueba. |
-| LocalStorage | Guarda usuarios (con la contraseña como hash), la sesión, el saldo y el historial de cobros. | No es una fuente confiable: el usuario puede editarlo (ver [límites](#límites-conocidos-del-diseño)). |
-| `api/` + SnailPay | Valida la solicitud de cobro y responde según el escenario (aprobado, rechazado, error del sistema). | No guarda estado, no toca servicios reales, no conoce el saldo. |
+| Pieza             | Responsabilidad                                                                                                              | No hace                                                                                               |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `frontend/`       | Registro y login locales, sesión, dashboard, gráficas, formulario de recarga y aplicar el saldo cuando un cobro es aprobado. | No decide si un cobro se aprueba.                                                                     |
+| LocalStorage      | Guarda usuarios (con la contraseña como hash), la sesión, el saldo y el historial de cobros.                                 | No es una fuente confiable: el usuario puede editarlo (ver [límites](#límites-conocidos-del-diseño)). |
+| `api/` + SnailPay | Valida la solicitud de cobro y responde según el escenario (aprobado, rechazado, error del sistema).                         | No guarda estado, no toca servicios reales, no conoce el saldo.                                       |
 
 **Por qué el backend solo tiene SnailPay.** El alcance pide que el registro, la sesión y el saldo sean una simulación local en LocalStorage, y que SnailPay se construya en Express. Poner la autenticación en el servidor contradiría el requisito de simulación local y agregaría una capa que no se evalúa. La propuesta de cómo evolucionaría con una base de datos está en [propuesta de base de datos](../07-entrega/propuesta-base-de-datos.md).
 
@@ -58,6 +58,7 @@ sequenceDiagram
 ```
 
 **Regla contra falsos éxitos.** El frontend solo suma saldo si se cumplen las cinco condiciones:
+
 1. El HTTP es 201.
 2. `status` es `approved`.
 3. Hay un `authorization_code`.
@@ -68,13 +69,13 @@ Cualquier otra combinación, incluida una respuesta que no se puede interpretar,
 
 ## Dónde vive cada dato
 
-| Dato | Dónde | Detalle |
-|---|---|---|
-| Usuario (nombre, correo, hash de la contraseña) | LocalStorage | [Autenticación y sesión](autenticacion-y-sesion.md) |
-| Sesión | LocalStorage | [Autenticación y sesión](autenticacion-y-sesion.md) |
-| Saldo (en centavos) e historial de cobros | LocalStorage | [Persistencia en LocalStorage](persistencia-localstorage.md) |
-| Datos de las gráficas | Generados al vuelo, de forma determinista | [ADR 0007](adr/0007-datos-simulados-de-graficas.md) |
-| Escenarios de SnailPay | Código de `api/`, sin estado | [Escenarios](../03-snailpay/escenarios.md) |
+| Dato                                            | Dónde                                     | Detalle                                                      |
+| ----------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------ |
+| Usuario (nombre, correo, hash de la contraseña) | LocalStorage                              | [Autenticación y sesión](autenticacion-y-sesion.md)          |
+| Sesión                                          | LocalStorage                              | [Autenticación y sesión](autenticacion-y-sesion.md)          |
+| Saldo (en centavos) e historial de cobros       | LocalStorage                              | [Persistencia en LocalStorage](persistencia-localstorage.md) |
+| Datos de las gráficas                           | Generados al vuelo, de forma determinista | [ADR 0007](adr/0007-datos-simulados-de-graficas.md)          |
+| Escenarios de SnailPay                          | Código de `api/`, sin estado              | [Escenarios](../03-snailpay/escenarios.md)                   |
 
 ## Límites conocidos del diseño
 

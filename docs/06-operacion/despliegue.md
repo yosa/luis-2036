@@ -6,10 +6,10 @@
 
 ## Resumen
 
-| Pieza | Plataforma | URL |
-|---|---|---|
+| Pieza    | Plataforma                                                           | URL            |
+| -------- | -------------------------------------------------------------------- | -------------- |
 | Frontend | AWS S3 + CloudFront (sitio estático de un repositorio privado) | ⟨por publicar⟩ |
-| API | AWS Lambda + API Gateway (`serverless-http`) | ⟨por publicar⟩ |
+| API      | AWS Lambda + API Gateway (`serverless-http`)                         | ⟨por publicar⟩ |
 
 ## Runbook (borrador)
 

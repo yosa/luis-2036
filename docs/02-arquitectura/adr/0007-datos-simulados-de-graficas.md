@@ -8,6 +8,7 @@
 ## Contexto
 
 El dashboard muestra dos gráficas con datos **simulados**:
+
 - un donut de apuestas ganadas y perdidas;
 - barras con las victorias de cada caracol en un **día simulado de 6 carreras entre 6 caracoles**.
 
@@ -24,18 +25,20 @@ Los datos deben ser **coherentes con esas reglas**. No se construye una sección
 ## Consecuencias
 
 **Positivas**:
+
 - La coherencia se puede probar como invariante: 6 carreras, un ganador por carrera, la suma de las barras es 6, y las apuestas ganadas coinciden con los ganadores.
 - No hay nada que guardar.
 - Una recarga no cambia las gráficas de forma arbitraria.
 
 **Negativas / costos**:
+
 - El donut tiene números pequeños (como máximo 6 apuestas). Se acepta por coherencia con el día simulado. La gráfica muestra cantidades y porcentaje.
 
 ## Alternativas evaluadas
 
-| Opción | Pros | Contras | Veredicto |
-|---|---|---|---|
-| **Generador determinista con semilla por usuario y día** | Coherente, reproducible y comprobable | Hay que escribir un PRNG pequeño | ✅ |
-| `Math.random` en cada render | Trivial | Cambia al recargar y no se puede probar | ❌ |
-| Datos fijos a mano (JSON) | Simple | No demuestra la regla y se ven igual siempre | Descartado |
-| Donut sobre un historial de varios días | Números más grandes | Se desacopla del día que muestran las barras | Descartado |
+| Opción                                                   | Pros                                  | Contras                                      | Veredicto  |
+| -------------------------------------------------------- | ------------------------------------- | -------------------------------------------- | ---------- |
+| **Generador determinista con semilla por usuario y día** | Coherente, reproducible y comprobable | Hay que escribir un PRNG pequeño             | ✅         |
+| `Math.random` en cada render                             | Trivial                               | Cambia al recargar y no se puede probar      | ❌         |
+| Datos fijos a mano (JSON)                                | Simple                                | No demuestra la regla y se ven igual siempre | Descartado |
+| Donut sobre un historial de varios días                  | Números más grandes                   | Se desacopla del día que muestran las barras | Descartado |

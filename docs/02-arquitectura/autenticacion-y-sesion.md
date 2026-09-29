@@ -32,13 +32,13 @@
 
 ## Por qué PBKDF2 con Web Crypto
 
-| Opción | Pros | Contras | Veredicto |
-|---|---|---|---|
-| **PBKDF2-SHA256 (Web Crypto)** | Nativo en todos los navegadores, sin dependencias, recomendado por OWASP con ≥ 600 000 iteraciones, y asíncrono (no congela la UI). | Es menos resistente a GPU que Argon2id. | ✅ |
-| Argon2id (WASM) | Es el más recomendado hoy. | Agrega un binario WASM y más configuración para un alcance de simulación. | Descartado por costo y beneficio en este alcance |
-| bcrypt (JS) | Es conocido. | Una implementación en JS puro es lenta y bloquea el hilo principal, y trunca la contraseña a 72 bytes. | Descartado |
-| SHA-256 simple | Es trivial. | No tiene sal ni factor de trabajo, así que cae ante tablas precalculadas. | ❌ Nunca |
-| Guardarla en claro o en base64 | — | Base64 no es cifrado. | ❌ Nunca |
+| Opción                         | Pros                                                                                                                                | Contras                                                                                                | Veredicto                                        |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| **PBKDF2-SHA256 (Web Crypto)** | Nativo en todos los navegadores, sin dependencias, recomendado por OWASP con ≥ 600 000 iteraciones, y asíncrono (no congela la UI). | Es menos resistente a GPU que Argon2id.                                                                | ✅                                               |
+| Argon2id (WASM)                | Es el más recomendado hoy.                                                                                                          | Agrega un binario WASM y más configuración para un alcance de simulación.                              | Descartado por costo y beneficio en este alcance |
+| bcrypt (JS)                    | Es conocido.                                                                                                                        | Una implementación en JS puro es lenta y bloquea el hilo principal, y trunca la contraseña a 72 bytes. | Descartado                                       |
+| SHA-256 simple                 | Es trivial.                                                                                                                         | No tiene sal ni factor de trabajo, así que cae ante tablas precalculadas.                              | ❌ Nunca                                         |
+| Guardarla en claro o en base64 | —                                                                                                                                   | Base64 no es cifrado.                                                                                  | ❌ Nunca                                         |
 
 ## Límites honestos
 

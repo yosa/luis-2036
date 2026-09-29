@@ -21,13 +21,13 @@ npm run dev                      # API en http://localhost:3000 · frontend en h
 
 ## Variables de entorno
 
-| Paquete | Variable | Default | Para qué |
-|---|---|---|---|
-| api | `PORT` | `3000` | Puerto local |
-| api | `CORS_ORIGINS` | `http://localhost:5173` | Orígenes permitidos |
-| api | `SNAILPAY_OUTAGE` | `false` | `true` simula la caída completa del servicio |
-| frontend | `VITE_API_BASE_URL` | `http://localhost:3000` | URL del API |
-| frontend | `VITE_HTTP_TIMEOUT_MS` | `8000` | Timeout del cliente para los cobros |
+| Paquete  | Variable               | Default                 | Para qué                                     |
+| -------- | ---------------------- | ----------------------- | -------------------------------------------- |
+| api      | `PORT`                 | `3000`                  | Puerto local                                 |
+| api      | `CORS_ORIGINS`         | `http://localhost:5173` | Orígenes permitidos                          |
+| api      | `SNAILPAY_OUTAGE`      | `false`                 | `true` simula la caída completa del servicio |
+| frontend | `VITE_API_BASE_URL`    | `http://localhost:3000` | URL del API                                  |
+| frontend | `VITE_HTTP_TIMEOUT_MS` | `8000`                  | Timeout del cliente para los cobros          |
 
 ## Reproducir los escenarios de SnailPay
 

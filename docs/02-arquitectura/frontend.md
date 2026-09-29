@@ -43,34 +43,34 @@ src/
 
 ## Rutas
 
-| Ruta | Acceso | Pantalla |
-|---|---|---|
-| `/register` | solo sin sesión | Registro |
-| `/login` | solo sin sesión | Inicio de sesión |
-| `/dashboard` | solo con sesión | Dashboard |
-| `/recharge` | solo con sesión | Recarga con SnailPay (también accesible desde el dashboard) |
-| `/` | — | Redirige a `/dashboard` o a `/login` según haya sesión |
+| Ruta         | Acceso          | Pantalla                                                    |
+| ------------ | --------------- | ----------------------------------------------------------- |
+| `/register`  | solo sin sesión | Registro                                                    |
+| `/login`     | solo sin sesión | Inicio de sesión                                            |
+| `/dashboard` | solo con sesión | Dashboard                                                   |
+| `/recharge`  | solo con sesión | Recarga con SnailPay (también accesible desde el dashboard) |
+| `/`          | —               | Redirige a `/dashboard` o a `/login` según haya sesión      |
 
 Los guards son layout routes (`ProtectedRoute`, `PublicOnlyRoute`). La sesión se rehidrata desde LocalStorage **antes** del primer render, para que un refresh no parpadee hacia el login (RF-06).
 
 ## Estado
 
-| Store | Estado | Acciones |
-|---|---|---|
-| `session` | usuario activo (sin el hash) y vencimiento | `register`, `login`, `logout`, `restore` |
-| `wallet` | saldo en centavos, cobros del usuario | `applyCharge(response, requestedAmount)`: suma solo si la respuesta cumple la regla contra falsos éxitos |
+| Store     | Estado                                     | Acciones                                                                                                 |
+| --------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `session` | usuario activo (sin el hash) y vencimiento | `register`, `login`, `logout`, `restore`                                                                 |
+| `wallet`  | saldo en centavos, cobros del usuario      | `applyCharge(response, requestedAmount)`: suma solo si la respuesta cumple la regla contra falsos éxitos |
 
 Las reglas de negocio viven en las acciones del store y en `lib/`, no en los componentes. Son lo primero que se prueba.
 
 ## Manejo de errores en la recarga
 
-| Resultado | Detección | Mensaje | Saldo |
-|---|---|---|---|
-| Aprobado | 201 + `approved` + `authorization_code` + monto coincide | "Recarga aprobada por $X. Autorización ABC123" | suma |
-| Rechazado | 402/422 + `rejected` | mensaje por `status_detail` (tabla en [escenarios](../03-snailpay/escenarios.md)) | igual |
-| Error del sistema | 503 + `error` | "SnailPay no está disponible. No se hizo ningún cargo." | igual |
-| Timeout | `HttpTimeoutError` (se vence el límite del cliente) | "No pudimos confirmar la recarga. No se aplicó ningún saldo." | igual |
-| Sin red | `HttpNetworkError` | "Sin conexión con SnailPay." | igual |
-| Respuesta que no se puede interpretar | falla el esquema del contrato | "Respuesta inesperada. No se aplicó ningún saldo." | igual |
+| Resultado                             | Detección                                                | Mensaje                                                                           | Saldo |
+| ------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------- | ----- |
+| Aprobado                              | 201 + `approved` + `authorization_code` + monto coincide | "Recarga aprobada por $X. Autorización ABC123"                                    | suma  |
+| Rechazado                             | 402/422 + `rejected`                                     | mensaje por `status_detail` (tabla en [escenarios](../03-snailpay/escenarios.md)) | igual |
+| Error del sistema                     | 503 + `error`                                            | "SnailPay no está disponible. No se hizo ningún cargo."                           | igual |
+| Timeout                               | `HttpTimeoutError` (se vence el límite del cliente)      | "No pudimos confirmar la recarga. No se aplicó ningún saldo."                     | igual |
+| Sin red                               | `HttpNetworkError`                                       | "Sin conexión con SnailPay."                                                      | igual |
+| Respuesta que no se puede interpretar | falla el esquema del contrato                            | "Respuesta inesperada. No se aplicó ningún saldo."                                | igual |
 
 El botón de envío se deshabilita mientras la petición está en vuelo, y un cobro aprobado se aplica **una sola vez por `id`** aunque la respuesta llegue repetida. Un encabezado `Idempotency-Key`, que deduplica en el servidor, queda como mejora futura porque SnailPay no guarda estado.

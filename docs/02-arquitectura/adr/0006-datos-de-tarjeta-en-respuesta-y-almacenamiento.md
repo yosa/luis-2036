@@ -8,6 +8,7 @@
 ## Contexto
 
 El alcance exige que el número de tarjeta y el CVV **vengan en las respuestas del servicio**, **se guarden en LocalStorage** y **siempre sean ficticios**. En un sistema real las dos cosas estarían prohibidas:
+
 - PCI DSS prohíbe guardar el CVV después de la autorización, incluso cifrado.
 - El número de tarjeta solo puede guardarse protegido, y debe mostrarse truncado.
 
@@ -37,8 +38,8 @@ Hay que cumplir el alcance sin normalizar una práctica insegura y sin exponer m
 
 ## Alternativas evaluadas
 
-| Opción | Pros | Contras | Veredicto |
-|---|---|---|---|
-| **Cumplir el requisito y limitar la exposición** | Cumple el alcance con el menor riesgo posible dentro de él | Datos sensibles (ficticios) en LocalStorage | ✅ |
-| Guardar el PAN enmascarado y omitir el CVV | Correcto según PCI | Incumple un requisito explícito | Descartado |
-| Cifrar en LocalStorage con una llave del bundle | Parece más seguro | Es teatro: la llave está en el mismo bundle | ❌ |
+| Opción                                           | Pros                                                       | Contras                                     | Veredicto  |
+| ------------------------------------------------ | ---------------------------------------------------------- | ------------------------------------------- | ---------- |
+| **Cumplir el requisito y limitar la exposición** | Cumple el alcance con el menor riesgo posible dentro de él | Datos sensibles (ficticios) en LocalStorage | ✅         |
+| Guardar el PAN enmascarado y omitir el CVV       | Correcto según PCI                                         | Incumple un requisito explícito             | Descartado |
+| Cifrar en LocalStorage con una llave del bundle  | Parece más seguro                                          | Es teatro: la llave está en el mismo bundle | ❌         |
