@@ -1,6 +1,6 @@
 # ADR 0002 — Librerías del frontend y de la API
 
-- **Estado**: Propuesto
+- **Estado**: Aceptado (2026-09-28)
 - **Fecha**: 2026-09-28
 - **Decide**: Luis Heredia
 - **Reemplaza**: —
@@ -54,4 +54,4 @@ Al instalar (2026-09-28) se eligió la última versión de cada librería, salvo
 
 ## Pendientes
 
-- Confirmar si hace falta una primitiva accesible para el diálogo de recarga o si alcanza con una página propia (`/recharge`).
+Ninguno. La recarga es una página propia (`/recharge`), así que no hizo falta una primitiva de diálogo. Para el E2E se sumó `@testing-library/cypress`, que permite seleccionar por label y rol como en las pruebas de componentes.

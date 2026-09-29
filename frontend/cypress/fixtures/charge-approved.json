@@ -1,0 +1,14 @@
+{
+  "id": "b8a4c7e2-5f3d-4e1a-9c2b-7d6e5f4a3b21",
+  "status": "approved",
+  "status_detail": "accredited",
+  "transaction_amount": 250.5,
+  "currency_id": "MXN",
+  "date_created": "2026-09-28T19:54:03.120Z",
+  "authorization_code": "A7K2Q9",
+  "reference": "SNP-20260928-7K2QF4",
+  "payer_id": null,
+  "payer_email": "ana@example.com",
+  "card_number": "1234123412341234",
+  "cvv": "543"
+}
