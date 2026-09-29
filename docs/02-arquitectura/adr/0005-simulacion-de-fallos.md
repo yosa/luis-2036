@@ -63,4 +63,4 @@ El alcance deja al proyecto decidir **qué errores de transacción simular**. Ad
 
 ## Pendientes
 
-- Colección de Postman con los 14 escenarios (estándar de colecciones del ecosistema).
+Ninguno. La colección de Postman con los 14 escenarios está en [`api/postman/`](../../../api/postman/README.md).

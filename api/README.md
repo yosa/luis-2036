@@ -13,5 +13,6 @@ npm run build -w @snail-race/api   # dist/server.js y dist/lambda.js (esbuild)
 | `POST /v1/snailpay/charges` | Solicita un cobro ([contrato](../docs/03-snailpay/contrato.md), [escenarios](../docs/03-snailpay/escenarios.md)) |
 | `GET /v1/health`            | Salud y estado de la caída simulada                                                                              |
 
+- Colección Postman y Newman: [`postman/`](postman/README.md) (`npm run test:postman -w @snail-race/api`)
 - Arquitectura y decisiones: [`docs/02-arquitectura/api.md`](../docs/02-arquitectura/api.md)
 - Variables de entorno: [`.env.example`](.env.example) y [`docs/06-operacion/ejecutar-local.md`](../docs/06-operacion/ejecutar-local.md)

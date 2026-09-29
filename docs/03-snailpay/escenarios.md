@@ -66,4 +66,10 @@ curl -s -X POST http://localhost:3000/v1/snailpay/charges \
 SNAILPAY_OUTAGE=true npm run dev --workspace api
 ```
 
-> ⏳ Cuando exista el API, se agregará una colección de Postman en `api/postman/` que cubra las 14 filas, siguiendo el estándar de colecciones del ecosistema.
+## Reproducir con Postman o Newman
+
+La colección [`api/postman/`](../../api/postman/README.md) trae los 14 escenarios, en este mismo orden, en el folder `SnailPay`, cada uno con su descripción y sus aserciones. El folder `Smoke` corre con Newman:
+
+```bash
+npm run test:postman -w @snail-race/api   # 13 requests, 98 aserciones, contra el API en :3000
+```

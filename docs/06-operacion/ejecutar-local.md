@@ -49,9 +49,10 @@ SNAILPAY_OUTAGE=true npm run dev -w @snail-race/api
 
 ## Otros comandos
 
-| Comando                        | Qué hace                                         |
-| ------------------------------ | ------------------------------------------------ |
-| `npm test`                     | Pruebas del API y del frontend                   |
-| `npm run check`                | Type-check + lint + formato + pruebas            |
-| `npm run build`                | Build del API (esbuild) y del frontend (Vite)    |
-| `http://localhost:5173/dev/ui` | Catálogo de componentes (solo con `npm run dev`) |
+| Comando                                   | Qué hace                                         |
+| ----------------------------------------- | ------------------------------------------------ |
+| `npm test`                                | Pruebas del API y del frontend                   |
+| `npm run check`                           | Type-check + lint + formato + pruebas            |
+| `npm run build`                           | Build del API (esbuild) y del frontend (Vite)    |
+| `npm run test:postman -w @snail-race/api` | Smoke de Postman (Newman) contra el API en :3000 |
+| `http://localhost:5173/dev/ui`            | Catálogo de componentes (solo con `npm run dev`) |

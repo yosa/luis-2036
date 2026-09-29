@@ -27,3 +27,7 @@ cypress/videos/
 !.vscode/extensions.json
 
 # Los lock files SÍ se versionan (aplicación → instalaciones deterministas)
+
+# Postman: environments llenos y reportes de Newman
+api/postman/*.postman_environment.json
+api/postman/newman-report.xml

@@ -1,0 +1,1227 @@
+{
+  "info": {
+    "name": "snailpay",
+    "_postman_id": "snailpay-v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "# SnailPay — pasarela de pagos simulada\n\nColección conforme al estándar de colecciones Postman del ecosistema, adaptada a una pasarela **simulada**:\n\n- **Sin auth, sin tenant y sin modo sintético:** SnailPay no autentica ni guarda estado (ADR 0004), así que no hay bootstrap de login ni secretos.\n- **Aserciones:** las rutas propias (`/v1/health`, 404) validan el **envelope**; las de cobro validan el **contrato de proveedor** con un test a nivel colección que exige los campos obligatorios en toda respuesta.\n- **Folders:** `⚡ Flujo rápido` (Runner en un clic), `SnailPay` (los 14 escenarios documentados, con su descripción) y `Smoke` (lo que corre Newman).\n\nEscenarios y datos: `docs/03-snailpay/escenarios.md`. Guía: `api/postman/README.md`."
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Contrato de SnailPay (ADR 0004): TODA respuesta de cobro trae la misma forma,",
+          "// sea éxito, rechazo, dato inválido, error del sistema o JSON malformado.",
+          "if (!pm.request.url.getPath().endsWith('/snailpay/charges')) { return; }",
+          "const body = pm.response.json();",
+          "pm.test('contrato: campos obligatorios', () => pm.expect(body).to.include.all.keys('id', 'status', 'status_detail', 'transaction_amount', 'date_created', 'authorization_code', 'reference', 'payer_id', 'payer_email', 'card_number', 'cvv', 'currency_id'));",
+          "pm.test('contrato: status válido', () => pm.expect(['approved', 'rejected', 'error']).to.include(body.status));",
+          "pm.test('contrato: authorization_code solo si approved', () => { if (body.status === 'approved') { pm.expect(body.authorization_code).to.be.a('string'); } else { pm.expect(body.authorization_code).to.be.null; } });",
+          "pm.test('contrato: reference SNP-AAAAMMDD-XXXXXX', () => pm.expect(body.reference).to.match(/^SNP-\\d{8}-[A-Z0-9]{6}$/));",
+          "pm.test('contrato: date_created ISO 8601', () => pm.expect(new Date(body.date_created).toISOString()).to.eql(body.date_created));"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "⚡ Flujo rápido",
+      "item": [
+        {
+          "name": "1 · Salud del API",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('envelope: success true y errors vacío', () => { pm.expect(body.success).to.be.true; pm.expect(body.errors).to.be.an('array').that.is.empty; });",
+                  "pm.test('data.status = ok', () => pm.expect(body.data.status).to.eql('ok'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{backendUrl}}/v1/health",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "health"]
+            },
+            "description": "Comprueba que el API responde y si la caída simulada está activa."
+          }
+        },
+        {
+          "name": "2 · Cobro aprobado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = approved', () => pm.expect(body.status).to.eql('approved'));",
+                  "pm.test('status_detail = accredited', () => pm.expect(body.status_detail).to.eql('accredited'));",
+                  "pm.test('authorization_code de 6 caracteres', () => pm.expect(pm.response.json().authorization_code).to.match(/^[A-Z0-9]{6}$/));",
+                  "pm.environment.set('lastChargeId', pm.response.json().id);",
+                  "pm.environment.set('lastReference', pm.response.json().reference);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 250.5,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Cobro exitoso; guarda el id y la referencia en variables."
+          }
+        },
+        {
+          "name": "3 · Cobro rechazado (CVV incorrecto)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = cc_rejected_bad_filled_security_code', () => pm.expect(body.status_detail).to.eql('cc_rejected_bad_filled_security_code'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"000\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "El saldo no debe cambiar en la app."
+          }
+        }
+      ]
+    },
+    {
+      "name": "SnailPay",
+      "description": "Los 14 escenarios en el orden de `docs/03-snailpay/escenarios.md`. El 1, el 5 y el 14 están fuera del Smoke (ver su descripción).",
+      "item": [
+        {
+          "name": "01 · Caída simulada (requiere SNAILPAY_OUTAGE=true)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 503', () => pm.response.to.have.status(503));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = error', () => pm.expect(body.status).to.eql('error'));",
+                  "pm.test('status_detail = service_unavailable', () => pm.expect(body.status_detail).to.eql('service_unavailable'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 1. Solo pasa si el API se levantó con `SNAILPAY_OUTAGE=true`; con el API normal esta request aprueba y el test falla, a propósito. **Fuera del Smoke** porque depende de la configuración del servidor."
+          }
+        },
+        {
+          "name": "02 · Datos inválidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422', () => pm.response.to.have.status(422));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = invalid_request', () => pm.expect(body.status_detail).to.eql('invalid_request'));",
+                  "pm.test('field_errors por campo', () => { const fields = pm.response.json().field_errors.map((e) => e.field); pm.expect(fields).to.include.members(['card_number', 'expiration', 'cvv']); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234\",\n  \"expiration\": \"13/26\",\n  \"cvv\": \"5\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 2 de docs/03-snailpay/escenarios.md. Formato inválido en varios campos. La respuesta trae `field_errors` con un error por campo."
+          }
+        },
+        {
+          "name": "03 · Error del sistema (tarjeta …0503)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 503', () => pm.response.to.have.status(503));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = error', () => pm.expect(body.status).to.eql('error'));",
+                  "pm.test('status_detail = service_unavailable', () => pm.expect(body.status_detail).to.eql('service_unavailable'));",
+                  "pm.test('Retry-After presente', () => pm.response.to.have.header('Retry-After'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"4000000000000503\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 3 de docs/03-snailpay/escenarios.md. SnailPay no disponible. Trae `Retry-After: 30`. Nunca aprueba."
+          }
+        },
+        {
+          "name": "04 · Falla interna (tarjeta …0500)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 503', () => pm.response.to.have.status(503));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = error', () => pm.expect(body.status).to.eql('error'));",
+                  "pm.test('status_detail = internal_error', () => pm.expect(body.status_detail).to.eql('internal_error'));",
+                  "pm.test('Retry-After presente', () => pm.response.to.have.header('Retry-After'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"4000000000000500\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 4 de docs/03-snailpay/escenarios.md. Falla interna simulada."
+          }
+        },
+        {
+          "name": "05 · Timeout (tarjeta …0408, tarda 12 s)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 504', () => pm.response.to.have.status(504));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = error', () => pm.expect(body.status).to.eql('error'));",
+                  "pm.test('status_detail = processing_timeout', () => pm.expect(body.status_detail).to.eql('processing_timeout'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"4000000000000408\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 5. SnailPay espera `SNAILPAY_PROCESSING_DELAY_MS` (12 s por defecto) y responde 504. El frontend corta antes (8 s), así que en la app se ve como timeout del cliente. **Fuera del Smoke** por lento."
+          }
+        },
+        {
+          "name": "06 · Cobro exitoso",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = approved', () => pm.expect(body.status).to.eql('approved'));",
+                  "pm.test('status_detail = accredited', () => pm.expect(body.status_detail).to.eql('accredited'));",
+                  "pm.test('authorization_code de 6 caracteres', () => pm.expect(pm.response.json().authorization_code).to.match(/^[A-Z0-9]{6}$/));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 6 de docs/03-snailpay/escenarios.md. La combinación de éxito del alcance: 1234123412341234 · 12/26 · 543."
+          }
+        },
+        {
+          "name": "07 · Tarjeta vencida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = cc_rejected_expired', () => pm.expect(body.status_detail).to.eql('cc_rejected_expired'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"01/24\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 7 de docs/03-snailpay/escenarios.md. Cualquier vencimiento pasado."
+          }
+        },
+        {
+          "name": "08 · Fondos insuficientes (tarjeta …0402)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = cc_rejected_insufficient_funds', () => pm.expect(body.status_detail).to.eql('cc_rejected_insufficient_funds'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"4000000000000402\",\n  \"expiration\": \"10/30\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 8 de docs/03-snailpay/escenarios.md."
+          }
+        },
+        {
+          "name": "09 · Tarjeta bloqueada (tarjeta …0403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = cc_rejected_card_blocked', () => pm.expect(body.status_detail).to.eql('cc_rejected_card_blocked'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"4000000000000403\",\n  \"expiration\": \"10/30\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 9 de docs/03-snailpay/escenarios.md."
+          }
+        },
+        {
+          "name": "10 · CVV incorrecto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = cc_rejected_bad_filled_security_code', () => pm.expect(body.status_detail).to.eql('cc_rejected_bad_filled_security_code'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"999\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 10 de docs/03-snailpay/escenarios.md. Tarjeta de éxito con otro CVV."
+          }
+        },
+        {
+          "name": "11 · Vencimiento incorrecto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = cc_rejected_bad_filled_date', () => pm.expect(body.status_detail).to.eql('cc_rejected_bad_filled_date'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"11/28\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 11 de docs/03-snailpay/escenarios.md. Tarjeta de éxito con otra fecha futura."
+          }
+        },
+        {
+          "name": "12 · Tarjeta desconocida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = cc_rejected_unknown_card', () => pm.expect(body.status_detail).to.eql('cc_rejected_unknown_card'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_number\": \"5555666677778888\",\n  \"expiration\": \"10/30\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 12 de docs/03-snailpay/escenarios.md. Cualquier otro número de 16 dígitos."
+          }
+        },
+        {
+          "name": "13 · JSON malformado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                  "pm.test('status_detail = malformed_request', () => pm.expect(body.status_detail).to.eql('malformed_request'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"card_number\": ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{backendUrl}}/v1/snailpay/charges",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "snailpay", "charges"]
+            },
+            "description": "Escenario 13. El cuerpo no es JSON válido; la respuesta conserva la forma del contrato."
+          }
+        },
+        {
+          "name": "14 · Rate limit (ver descripción)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{backendUrl}}/v1/health",
+              "host": ["{{backendUrl}}"],
+              "path": ["v1", "health"]
+            },
+            "description": "Escenario 14. Se dispara con más de `CHARGES_RATE_LIMIT_PER_MINUTE` (20) cobros por minuto desde la misma IP: corre el folder de SnailPay con el Runner y 21+ iteraciones. Responde 429 `rate_limited` con `Retry-After`. **Fuera del Smoke** para no bloquear el resto de las pruebas; lo cubre la prueba automatizada `api/test/feature/charges.test.ts`."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Smoke",
+      "description": "Contrato y liveness; corre con Newman (`npm run test:postman -w @snail-race/api`). Cada request es independiente y no depende del orden.",
+      "item": [
+        {
+          "name": "Smoke / Salud",
+          "item": [
+            {
+              "name": "smoke: health 200",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "const body = pm.response.json();",
+                      "pm.test('envelope: success true y errors vacío', () => { pm.expect(body.success).to.be.true; pm.expect(body.errors).to.be.an('array').that.is.empty; });",
+                      "pm.test('data.status = ok', () => pm.expect(body.data.status).to.eql('ok'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{backendUrl}}/v1/health",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "health"]
+                },
+                "description": "Liveness con envelope."
+              }
+            },
+            {
+              "name": "smoke: ruta inexistente 404 (code route.notFound)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                      "const body = pm.response.json();",
+                      "pm.test('envelope: success false', () => pm.expect(body.success).to.be.false);",
+                      "pm.test('code dot.case = route.notFound', () => pm.expect(body.errors[0].code).to.eql('route.notFound'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{backendUrl}}/v1/no-existe",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "no-existe"]
+                },
+                "description": "El 404 sale con envelope, nunca con HTML."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Smoke / SnailPay",
+          "item": [
+            {
+              "name": "smoke: cobro 422 (invalid_request)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422', () => pm.response.to.have.status(422));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = invalid_request', () => pm.expect(body.status_detail).to.eql('invalid_request'));",
+                      "pm.test('field_errors por campo', () => { const fields = pm.response.json().field_errors.map((e) => e.field); pm.expect(fields).to.include.members(['card_number', 'expiration', 'cvv']); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"1234\",\n  \"expiration\": \"13/26\",\n  \"cvv\": \"5\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 2."
+              }
+            },
+            {
+              "name": "smoke: cobro 503 (service_unavailable)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 503', () => pm.response.to.have.status(503));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = error', () => pm.expect(body.status).to.eql('error'));",
+                      "pm.test('status_detail = service_unavailable', () => pm.expect(body.status_detail).to.eql('service_unavailable'));",
+                      "pm.test('Retry-After presente', () => pm.response.to.have.header('Retry-After'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"4000000000000503\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 3."
+              }
+            },
+            {
+              "name": "smoke: cobro 503 (internal_error)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 503', () => pm.response.to.have.status(503));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = error', () => pm.expect(body.status).to.eql('error'));",
+                      "pm.test('status_detail = internal_error', () => pm.expect(body.status_detail).to.eql('internal_error'));",
+                      "pm.test('Retry-After presente', () => pm.response.to.have.header('Retry-After'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"4000000000000500\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 4."
+              }
+            },
+            {
+              "name": "smoke: cobro 201 (accredited)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = approved', () => pm.expect(body.status).to.eql('approved'));",
+                      "pm.test('status_detail = accredited', () => pm.expect(body.status_detail).to.eql('accredited'));",
+                      "pm.test('authorization_code de 6 caracteres', () => pm.expect(pm.response.json().authorization_code).to.match(/^[A-Z0-9]{6}$/));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 6."
+              }
+            },
+            {
+              "name": "smoke: cobro 402 (cc_rejected_expired)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = cc_rejected_expired', () => pm.expect(body.status_detail).to.eql('cc_rejected_expired'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"01/24\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 7."
+              }
+            },
+            {
+              "name": "smoke: cobro 402 (cc_rejected_insufficient_funds)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = cc_rejected_insufficient_funds', () => pm.expect(body.status_detail).to.eql('cc_rejected_insufficient_funds'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"4000000000000402\",\n  \"expiration\": \"10/30\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 8."
+              }
+            },
+            {
+              "name": "smoke: cobro 402 (cc_rejected_card_blocked)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = cc_rejected_card_blocked', () => pm.expect(body.status_detail).to.eql('cc_rejected_card_blocked'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"4000000000000403\",\n  \"expiration\": \"10/30\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 9."
+              }
+            },
+            {
+              "name": "smoke: cobro 402 (cc_rejected_bad_filled_security_code)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = cc_rejected_bad_filled_security_code', () => pm.expect(body.status_detail).to.eql('cc_rejected_bad_filled_security_code'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"12/26\",\n  \"cvv\": \"999\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 10."
+              }
+            },
+            {
+              "name": "smoke: cobro 402 (cc_rejected_bad_filled_date)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = cc_rejected_bad_filled_date', () => pm.expect(body.status_detail).to.eql('cc_rejected_bad_filled_date'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"1234123412341234\",\n  \"expiration\": \"11/28\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 11."
+              }
+            },
+            {
+              "name": "smoke: cobro 402 (cc_rejected_unknown_card)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 402', () => pm.response.to.have.status(402));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = cc_rejected_unknown_card', () => pm.expect(body.status_detail).to.eql('cc_rejected_unknown_card'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card_number\": \"5555666677778888\",\n  \"expiration\": \"10/30\",\n  \"cvv\": \"543\",\n  \"holder_name\": \"Ana Pérez\",\n  \"amount\": 100,\n  \"payer_id\": \"{{payerId}}\",\n  \"payer_email\": \"{{payerEmail}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 12."
+              }
+            },
+            {
+              "name": "smoke: cobro 400 (malformed_request)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                      "const body = pm.response.json();",
+                      "pm.test('status = rejected', () => pm.expect(body.status).to.eql('rejected'));",
+                      "pm.test('status_detail = malformed_request', () => pm.expect(body.status_detail).to.eql('malformed_request'));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"card_number\": ",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{backendUrl}}/v1/snailpay/charges",
+                  "host": ["{{backendUrl}}"],
+                  "path": ["v1", "snailpay", "charges"]
+                },
+                "description": "Escenario 13."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
