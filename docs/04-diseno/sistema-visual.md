@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa la presentación y la experiencia de uso.
 > **Propósito:** cómo se ve la aplicación, con qué herramientas se diseñó y qué partes se generaron, se tomaron como base o se construyeron a mano (RNF-03).
-> **Estado:** implementado: tokens, componentes y las cuatro pantallas (registro, login, dashboard, recarga), revisadas en Chrome en modo claro, oscuro y móvil.
+> **Estado:** implementado y visible en el [catálogo de componentes](https://caracoles-staging.mangobinario.com/componentes): tokens, componentes y las cuatro pantallas (registro, login, dashboard, recarga), revisadas en Chrome en modo claro, oscuro y móvil.
 
 ## Principios
 

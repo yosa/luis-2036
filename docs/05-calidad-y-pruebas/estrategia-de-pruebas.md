@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa las pruebas y quien las corre.
 > **Propósito:** qué se prueba, **por qué se eligió** y cómo se ejecuta (RNF-06, E-03).
-> **Estado:** 136 pruebas unitarias y de integración (40 en el API, 96 en el frontend), 6 E2E con Cypress y el Smoke de Postman. La tabla "Qué se prueba" es el plan completo; "Pruebas implementadas" dice qué existe hoy.
+> **Estado:** 137 pruebas unitarias y de integración (40 en el API, 97 en el frontend), 6 E2E con Cypress y el Smoke de Postman. La tabla "Qué se prueba" es el plan completo; "Pruebas implementadas" dice qué existe hoy.
 
 ## Criterio
 
@@ -46,7 +46,7 @@ Convenciones: los selectores van por rol, label o texto visible (sin `data-testi
 | [`frontend/src/storage/createStorageSlot.test.ts`](../../frontend/src/storage/createStorageSlot.test.ts) | 5                           | Datos corruptos, JSON roto y `localStorage` bloqueado sin romper la app                                                                                        |
 | [`frontend/src/hooks/useZodForm.test.tsx`](../../frontend/src/hooks/useZodForm.test.tsx)                 | 4                           | Error asociado al campo, foco al primer error, datos transformados                                                                                             |
 | [`api/postman/`](../../api/postman/README.md) (Newman, folder `Smoke`)                                   | 13 requests / 98 aserciones | El contrato **contra el servidor real**: los campos obligatorios en toda respuesta de cobro, los escenarios, envelope en salud y 404                           |
-| Componentes (`Button`, `Alert`, `ThemeToggle`, `NotFound`, `DevCatalog`)                                 | 9                           | Accesibilidad observable: roles, nombres, estados de carga, teclado                                                                                            |
+| Componentes (`Button`, `Alert`, `ThemeToggle`, `NotFound`, catálogo)                                     | 10                          | Accesibilidad observable: roles, nombres, estados de carga, teclado                                                                                            |
 
 ## Cómo correrlas
 

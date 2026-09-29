@@ -7,15 +7,11 @@ import { ProtectedRoute, PublicOnlyRoute } from './guards'
 import { NotFound } from './notFound'
 import { RootError } from './rootError'
 
-/** Catálogo de componentes: solo en desarrollo, no entra al build de producción. */
-const devRoutes: RouteObject[] = import.meta.env.DEV
-  ? [
-      {
-        path: '/dev/ui',
-        lazy: async () => ({ Component: (await import('./devCatalog')).DevCatalog }),
-      },
-    ]
-  : []
+/** Catálogo de componentes: público y cargado aparte, sin peso extra para la aplicación. */
+const catalogRoute: RouteObject = {
+  path: '/componentes',
+  lazy: async () => ({ Component: (await import('./componentCatalog')).ComponentCatalog }),
+}
 
 /** Definición de rutas separada del router para poder montarla en pruebas (createMemoryRouter). */
 export const routes: RouteObject[] = [
@@ -30,7 +26,7 @@ export const routes: RouteObject[] = [
         element: <ProtectedRoute />,
         children: [{ element: <AppShell />, children: [...dashboardRoutes, ...rechargeRoutes] }],
       },
-      ...devRoutes,
+      catalogRoute,
       { path: '*', element: <NotFound /> },
     ],
   },

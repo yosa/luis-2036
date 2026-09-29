@@ -1,22 +1,31 @@
 import { CreditCard, LogOut } from 'lucide-react'
+import { Link } from 'react-router'
 import { Alert } from '../../components/alert'
 import { Button } from '../../components/button'
 import { TextField } from '../../components/textField'
 import { CenteredLayout } from '../centeredLayout'
-import { useDevCatalog } from './useDevCatalog'
+import { useComponentCatalog } from './useComponentCatalog'
 import styles from './styles.module.sass'
 
 /**
- * Catálogo de componentes (solo en desarrollo, /dev/ui). Permite revisar el
- * sistema visual y sus estados en ambos modos sin pasar por el flujo real.
+ * Catálogo de componentes (/componentes). Muestra el sistema visual y los
+ * estados de cada componente en ambos modos, sin pasar por el flujo real. Se
+ * carga aparte (lazy): no agrega peso a las pantallas de la aplicación.
  */
-export function DevCatalog() {
-  const { form, submitted, onSubmit } = useDevCatalog()
+export function ComponentCatalog() {
+  const { form, submitted, onSubmit } = useComponentCatalog()
 
   return (
     <CenteredLayout>
       <div className={styles.catalog}>
-        <h1>Catálogo de componentes</h1>
+        <header className={styles.intro}>
+          <h1>Catálogo de componentes</h1>
+          <p className={styles.hint}>
+            Referencia del sistema visual de la aplicación: cada componente en sus estados. Usa el
+            botón de sol o luna para verlos en modo claro y oscuro.
+          </p>
+          <Link to="/">Ir a la aplicación</Link>
+        </header>
 
         <section className={styles.section} aria-labelledby="buttons-title">
           <h2 id="buttons-title">Botones</h2>

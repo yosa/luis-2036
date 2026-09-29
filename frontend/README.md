@@ -10,7 +10,7 @@ npm run build -w @snail-race/web        # dist/
 npm run test:e2e                        # Cypress contra el build (vite preview :4173)
 ```
 
-En desarrollo, **http://localhost:5173/dev/ui** muestra el catálogo de componentes en sus estados; no entra al build de producción.
+**/componentes** muestra el catálogo de componentes en sus estados (en local: http://localhost:5173/componentes; publicado: https://caracoles-staging.mangobinario.com/componentes). Se carga aparte y no agrega peso a la aplicación.
 
 - Arquitectura y decisiones: [`docs/02-arquitectura/frontend.md`](../docs/02-arquitectura/frontend.md)
 - Sistema visual: [`docs/04-diseno/sistema-visual.md`](../docs/04-diseno/sistema-visual.md)

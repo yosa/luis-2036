@@ -1,6 +1,6 @@
 # Carreras de caracoles
 
-**Aplicación:** https://caracoles-staging.mangobinario.com · **Código:** https://github.com/yosa/luis-2036
+**Aplicación:** https://caracoles-staging.mangobinario.com · **Catálogo de componentes:** https://caracoles-staging.mangobinario.com/componentes · **Código:** https://github.com/yosa/luis-2036
 
 Aplicación web de temática de apuestas en carreras de caracoles:
 

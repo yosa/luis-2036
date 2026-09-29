@@ -20,7 +20,8 @@
 | 2026-09-28 22:21–22:36 | Despliegue: configuración del API y del sitio, API en Lambda, dominio y función de CloudFront, subida del sitio, verificación y runbook | 0 h 15 min    |                                                                           |
 | 2026-09-28 22:37–22:55 | Saneamiento de datos internos en el repo y reescritura del historial                                                                    | 0 h 18 min    |                                                                           |
 | 2026-09-28 23:38–23:46 | Repositorio público en GitHub (CLI, remoto y push doble)                                                                                | 0 h 08 min    |                                                                           |
+| 2026-09-29 07:19–07:21 | Catálogo de componentes público, redespliegue del sitio y documentación                                                                 | 0 h 02 min    |                                                                           |
 
 > Los tiempos salen de las marcas de tiempo de archivos, commits y del reloj del sistema, así que son aproximados al minuto. Se cuenta solo el tiempo de trabajo: las esperas de revisión y aprobación entre ramas no se suman.
 
-**Total del alcance principal (sin estándares):** 2 h 36 min hasta ahora.
+**Total del alcance principal (sin estándares):** 2 h 38 min.

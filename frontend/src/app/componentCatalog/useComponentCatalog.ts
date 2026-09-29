@@ -11,7 +11,7 @@ const demoSchema = z.object({
     .refine((value) => value >= 1 && value <= 10_000, 'El monto va de $1 a $10,000'),
 })
 
-export function useDevCatalog() {
+export function useComponentCatalog() {
   const [submitted, setSubmitted] = useState<string | null>(null)
   const form = useZodForm({
     schema: demoSchema,
