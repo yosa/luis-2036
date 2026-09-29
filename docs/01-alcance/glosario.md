@@ -31,10 +31,10 @@
 
 ## Técnicos
 
-| Término  | Significado                                                                                                                                         |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ADR      | _Architecture Decision Record_: registro de una decisión con su contexto, alternativas y consecuencias.                                             |
-| Envelope | Forma común de respuesta JSON de las APIs del ecosistema (`success`, `errors`, `data`). SnailPay usa en cambio el contrato de proveedor (ADR 0004). |
-| PBKDF2   | Función de derivación de claves que se usa para guardar la contraseña como hash con sal (ADR 0003).                                                 |
-| PAN      | _Primary Account Number_: el número de tarjeta.                                                                                                     |
-| Timeout  | Límite de espera del cliente. Al vencerse, la recarga queda como no confirmada y el saldo no cambia.                                                |
+| Término  | Significado                                                                                                                          |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| ADR      | _Architecture Decision Record_: registro de una decisión con su contexto, alternativas y consecuencias.                              |
+| Envelope | Forma común de respuesta JSON de mis APIs (`success`, `errors`, `data`). SnailPay usa en cambio el contrato de proveedor (ADR 0004). |
+| PBKDF2   | Función de derivación de claves que se usa para guardar la contraseña como hash con sal (ADR 0003).                                  |
+| PAN      | _Primary Account Number_: el número de tarjeta.                                                                                      |
+| Timeout  | Límite de espera del cliente. Al vencerse, la recarga queda como no confirmada y el saldo no cambia.                                 |

@@ -1,6 +1,6 @@
 // Configuración única de ESLint para los tres workspaces.
 // Base type-aware (projectService) para que las reglas de Sonar que necesitan
-// tipos sí comprueben; ver estándar de frontend §Análisis estático.
+// tipos sí comprueben (una regla type-aware sin tipos queda activa pero muda).
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import sonarjs from 'eslint-plugin-sonarjs'

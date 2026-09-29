@@ -15,12 +15,12 @@ Idioma de trabajo: español (documentación, commits, comentarios); identificado
 
 ## Estándares (leer antes de escribir código)
 
-Los estándares del ecosistema viven en `un repositorio privado`. **Se enlazan, no se copian aquí.** Para este repo aplican:
+El código sigue mis estándares de código, que viven en un repositorio privado y **no se copian aquí**. Los que aplican:
 
-- `estándar de frontend`: núcleo agnóstico de frontend.
-- `estándar de React`: React + Vite (Zustand, React Router, `fetch` con timeout, `storage/` tipado).
-- `estándar de Express`: Express + TS (slicing, zod en el borde, `AppError`, Vitest + supertest).
-- `estándar de respuesta JSON`: envelope. SnailPay lo sustituye por el contrato del proveedor simulado; ver ADR 0004.
+- **Núcleo de frontend:** idioma, organización por dominio y caso de uso, tokens, cliente HTTP con timeout, TypeScript con anotación delgada, reglas de Sonar dentro del `lint`, E2E a11y-first.
+- **React + Vite:** Zustand, React Router en modo librería, `fetch` con timeout y `storage/` tipado.
+- **Express + TS:** slicing por caso de uso, zod en el borde, `AppError`, Vitest + supertest.
+- **Respuesta JSON de APIs:** envelope `success`/`errors`/`data`. SnailPay lo sustituye por el contrato del proveedor simulado (ADR 0004).
 
 Si una decisión de este repo se aparta de un estándar, se documenta en un ADR.
 

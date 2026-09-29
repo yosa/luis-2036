@@ -1,7 +1,7 @@
 import type { Response } from 'express'
 
 /**
- * Envelope del ecosistema (estándar de respuesta JSON) para las rutas
+ * Envelope JSON común (success, errors, data) para las rutas
  * propias del API. Las respuestas de cobro usan el contrato de SnailPay (ADR 0004).
  */
 export type ApiError = { code: string; message: string; context: Record<string, unknown> }

@@ -3,7 +3,7 @@
 > **Audiencia:** quien desarrolla o revisa `frontend/`.
 > **Propósito:** cómo se organiza el código del frontend y por qué.
 > **Estado:** base técnica y sistema visual implementados (2026-09-28): tokens, storage tipado, tema, cliente HTTP, componentes base, `useZodForm` y catálogo `/dev/ui`. Auth terminado (registro, login, sesión, guards y `AppShell`). Todas las pantallas terminadas: registro, login, dashboard y recarga.
-> **Estándar que aplica:** `estándar de React` (y el núcleo `estándar de frontend`) del ecosistema. Este documento solo registra lo propio del proyecto.
+> **Estándar que aplica:** mis estándares de código para React + Vite (y el núcleo común de frontend). Este documento solo registra lo propio del proyecto.
 
 ## Stack
 

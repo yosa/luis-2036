@@ -1,6 +1,6 @@
 # Colección Postman de SnailPay
 
-Prueba manual (Postman) y automatizada (Newman) del API, conforme al estándar de colecciones Postman del ecosistema.
+Prueba manual (Postman) y automatizada (Newman) del API, conforme a mi estándar de colecciones Postman.
 
 | Archivo                                              | Qué es                                                                                       |
 | ---------------------------------------------------- | -------------------------------------------------------------------------------------------- |

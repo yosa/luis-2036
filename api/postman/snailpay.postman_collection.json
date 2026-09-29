@@ -3,7 +3,7 @@
     "name": "snailpay",
     "_postman_id": "snailpay-v1",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "# SnailPay — pasarela de pagos simulada\n\nColección conforme al estándar de colecciones Postman del ecosistema, adaptada a una pasarela **simulada**:\n\n- **Sin auth, sin tenant y sin modo sintético:** SnailPay no autentica ni guarda estado (ADR 0004), así que no hay bootstrap de login ni secretos.\n- **Aserciones:** las rutas propias (`/v1/health`, 404) validan el **envelope**; las de cobro validan el **contrato de proveedor** con un test a nivel colección que exige los campos obligatorios en toda respuesta.\n- **Folders:** `⚡ Flujo rápido` (Runner en un clic), `SnailPay` (los 14 escenarios documentados, con su descripción) y `Smoke` (lo que corre Newman).\n\nEscenarios y datos: `docs/03-snailpay/escenarios.md`. Guía: `api/postman/README.md`."
+    "description": "# SnailPay — pasarela de pagos simulada\n\nColección conforme a mi estándar de colecciones Postman, adaptada a una pasarela **simulada**:\n\n- **Sin auth, sin tenant y sin modo sintético:** SnailPay no autentica ni guarda estado (ADR 0004), así que no hay bootstrap de login ni secretos.\n- **Aserciones:** las rutas propias (`/v1/health`, 404) validan el **envelope**; las de cobro validan el **contrato de proveedor** con un test a nivel colección que exige los campos obligatorios en toda respuesta.\n- **Folders:** `⚡ Flujo rápido` (Runner en un clic), `SnailPay` (los 14 escenarios documentados, con su descripción) y `Smoke` (lo que corre Newman).\n\nEscenarios y datos: `docs/03-snailpay/escenarios.md`. Guía: `api/postman/README.md`."
   },
   "event": [
     {
