@@ -49,6 +49,8 @@ SNAILPAY_OUTAGE=true npm run dev -w @snail-race/api
 
 ## Otros comandos
 
+Los scripts de `scripts/` (referencias vetadas, PDF y despliegue) se explican en [`scripts/README.md`](../../scripts/README.md).
+
 | Comando                                   | Qué hace                                         |
 | ----------------------------------------- | ------------------------------------------------ |
 | `npm test`                                | Pruebas del API y del frontend                   |

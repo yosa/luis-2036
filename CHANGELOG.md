@@ -7,6 +7,12 @@ Registro de cambios de la documentación y de las decisiones, en orden de fecha 
 - 🧩 El catálogo de componentes pasa de `/dev/ui` (solo en desarrollo) a **/componentes**, público en la versión desplegada, para que quien evalúe pueda revisar el sistema visual. Se carga aparte (3 KB) y no agrega peso a la aplicación.
 - **Reflejado en:** [README](README.md) · [sistema visual](docs/04-diseno/sistema-visual.md) · [despliegue](docs/06-operacion/despliegue.md)
 
+## 2026-09-28 (noche) — documento de respuesta
+
+- 📄 Documento de respuesta: fuente en markdown y PDF versionado (4 páginas, Arial 10, sin código ni capturas), reproducible con `scripts/generar-pdf.sh`, que valida el máximo de páginas y los términos vetados. **Entrega completa.**
+- 📘 `scripts/README.md` explica los tres scripts y el hook: propósito, requisitos, uso, variables y qué validan.
+- **Reflejado en:** [estado](docs/01-alcance/estado.md) · [documento](docs/07-entrega/documento-respuesta.md) · [scripts](scripts/README.md)
+
 ## 2026-09-28 (noche) — repositorio público
 
 - 🌐 Código publicado en **https://github.com/yosa/luis-2036** como espejo del repositorio de trabajo; cada push actualiza los dos.

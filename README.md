@@ -1,6 +1,6 @@
 # Carreras de caracoles
 
-**Aplicación:** https://caracoles-staging.mangobinario.com · **Catálogo de componentes:** https://caracoles-staging.mangobinario.com/componentes · **Código:** https://github.com/yosa/luis-2036
+**Aplicación:** https://caracoles-staging.mangobinario.com · **Catálogo de componentes:** https://caracoles-staging.mangobinario.com/componentes · **Código:** https://github.com/yosa/luis-2036 · **Documento de respuesta:** [PDF](docs/07-entrega/documento-respuesta.pdf)
 
 Aplicación web de temática de apuestas en carreras de caracoles:
 
@@ -29,7 +29,7 @@ shared/      contrato de SnailPay (esquemas zod) compartido por api y frontend
 api/         Express + TypeScript — servicio SnailPay
 frontend/    React + Vite + TypeScript — registro, sesión, dashboard y recarga
 docs/        documentación del proyecto (índice abajo)
-scripts/     utilidades del repo (verificación previa a commit)
+scripts/     verificación previa a commit, generación del PDF y despliegue (ver scripts/README.md)
 ```
 
 ## Documentación
@@ -43,6 +43,7 @@ scripts/     utilidades del repo (verificación previa a commit)
 | [`05-calidad-y-pruebas/`](docs/05-calidad-y-pruebas/) | [Estrategia de pruebas](docs/05-calidad-y-pruebas/estrategia-de-pruebas.md): qué se prueba, por qué y cómo correrlo                                                                                                                                                                                                                                                  |
 | [`06-operacion/`](docs/06-operacion/)                 | [Ejecutar en local](docs/06-operacion/ejecutar-local.md) · [Despliegue](docs/06-operacion/despliegue.md)                                                                                                                                                                                                                                                             |
 | [`07-entrega/`](docs/07-entrega/)                     | [Uso de IA](docs/07-entrega/uso-de-ia.md) · [Registro de tiempo](docs/07-entrega/registro-de-tiempo.md) · [Propuesta de base de datos](docs/07-entrega/propuesta-base-de-datos.md) · [Documento de respuesta](docs/07-entrega/documento-respuesta.md)                                                                                                                |
+| [`scripts/`](scripts/README.md)                       | Qué hace cada script (referencias vetadas, PDF, despliegue), qué necesita y cómo se usa                                                                                                                                                                                                                                                                              |
 
 ## Convenciones
 
