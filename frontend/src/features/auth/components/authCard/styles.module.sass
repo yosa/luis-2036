@@ -1,0 +1,25 @@
+@use '../../../../styles/mixins' as m
+
+.card
+  @include m.card
+  width: 100%
+  max-width: 440px
+  display: flex
+  flex-direction: column
+  gap: var(--space-5)
+  padding: var(--space-5)
+
+  @include m.up(480px)
+    padding: var(--space-6)
+
+.header
+  display: flex
+  flex-direction: column
+  gap: var(--space-2)
+
+.subtitle
+  color: var(--text-muted)
+
+.footer
+  color: var(--text-muted)
+  text-align: center

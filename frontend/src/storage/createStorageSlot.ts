@@ -15,11 +15,12 @@ export type StorageSlot<T> = {
 
 const memoryFallback = new Map<string, string>()
 
-export function createStorageSlot<T>(
+/** El tipo sale del esquema (la frontera), no del valor por defecto. */
+export function createStorageSlot<S extends z.ZodType>(
   key: string,
-  schema: z.ZodType<T>,
-  fallback: () => T,
-): StorageSlot<T> {
+  schema: S,
+  fallback: () => z.output<S>,
+): StorageSlot<z.output<S>> {
   return {
     key,
     read() {

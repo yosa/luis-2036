@@ -2,6 +2,14 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — registro, login y sesión
+
+- 🔐 Registro y login locales con hash PBKDF2 (600 000 iteraciones); sesión de 8 h; guards; header con nombre y cerrar sesión. **Los cuatro mínimos de validez se cumplen.**
+- 🏛️ ADR 0003 **aceptado**.
+- 🧪 20 pruebas nuevas en el frontend, entre ellas el flujo completo con el router real; recorrido revisado en Chrome.
+- 🤖 El banco de pruebas en Chrome (MCP) queda documentado en el uso de IA.
+- **Reflejado en:** [estado](docs/01-alcance/estado.md) · [autenticación](docs/02-arquitectura/autenticacion-y-sesion.md) · [ADR 0003](docs/02-arquitectura/adr/0003-tratamiento-de-la-contrasena.md) · [uso de IA](docs/07-entrega/uso-de-ia.md)
+
 ## 2026-09-28 (noche) — colección Postman de SnailPay
 
 - 📮 Colección y environments en `api/postman/` según el estándar del ecosistema, adaptado a una pasarela simulada (sin auth, sin tenant, sin sintético).

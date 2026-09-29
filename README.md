@@ -7,7 +7,7 @@ Aplicación web de temática de apuestas en carreras de caracoles:
 
 Frontend en **React + TypeScript**, backend en **Express + TypeScript**, persistencia del usuario, la sesión y el saldo en **LocalStorage**.
 
-> **Estado (2026-09-28):** SnailPay (API) terminado y probado; frontend con base técnica y sistema visual. En curso: registro/login, dashboard y recarga.
+> **Estado (2026-09-28):** SnailPay (API) terminado y probado; registro, login y sesión terminados (mínimos de validez cumplidos). En curso: dashboard y recarga.
 > La matriz de lo terminado y lo pendiente vive en [`docs/01-alcance/estado.md`](docs/01-alcance/estado.md), y es la única fuente de verdad del avance.
 
 ## Inicio rápido

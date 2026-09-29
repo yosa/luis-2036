@@ -5,7 +5,7 @@ import { createStorageSlot } from '../../storage/createStorageSlot'
 
 export type ThemeMode = 'light' | 'dark'
 
-const themeSlot = createStorageSlot<ThemeMode | null>(
+const themeSlot = createStorageSlot(
   THEME_STORAGE_KEY,
   z.enum(['light', 'dark']).nullable(),
   () => null,

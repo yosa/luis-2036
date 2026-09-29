@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien desarrolla o revisa `frontend/`.
 > **Propósito:** cómo se organiza el código del frontend y por qué.
-> **Estado:** base técnica y sistema visual implementados (2026-09-28): tokens, storage tipado, tema, cliente HTTP, componentes base, `useZodForm` y catálogo `/dev/ui`. Pendiente: auth, dashboard y recarga.
+> **Estado:** base técnica y sistema visual implementados (2026-09-28): tokens, storage tipado, tema, cliente HTTP, componentes base, `useZodForm` y catálogo `/dev/ui`. Auth terminado (registro, login, sesión, guards y `AppShell`). Pendiente: dashboard (saldo y gráficas) y recarga.
 > **Estándar que aplica:** `estándar de React` (y el núcleo `estándar de frontend`) del ecosistema. Este documento solo registra lo propio del proyecto.
 
 ## Stack
@@ -13,10 +13,11 @@ React 19 · Vite 8 · TypeScript 6 strict · React Router 8 (modo librería) · 
 
 Leyenda: ✅ ya existe · ⏳ llega con su feature.
 
-- ✅ `app/`: router (agregador), `centeredLayout`, `notFound`, `rootError` y `devCatalog` (solo en desarrollo).
+- ✅ `app/`: router (agregador), `guards` (`ProtectedRoute`/`PublicOnlyRoute`), `appShell`, `centeredLayout`, `notFound`, `rootError` y `devCatalog` (solo en desarrollo).
+- ✅ `features/auth/` (registro, login, esquemas, rutas), `features/dashboard/overview` (saludo; saldo y gráficas pendientes), `stores/session`, `lib/crypto` y `storage/slots.ts` (usuarios y sesión).
 - ✅ `components/`: `button`, `textField`, `alert`, `themeToggle`, `brand`.
 - ✅ `hooks/useZodForm.ts`, `lib/http/`, `storage/createStorageSlot.ts`, `stores/theme/`, `constants/` y `styles/`.
-- ⏳ `features/`, `services/snailpay/`, `stores/session`, `stores/wallet`, `lib/crypto`, `lib/raceDay`, `lib/money` y `storage/slots.ts`.
+- ⏳ `features/recharge/`, `services/snailpay/`, `stores/wallet`, `lib/raceDay`, `lib/money` y los slots de monedero y cobros.
 
 Estructura objetivo:
 
