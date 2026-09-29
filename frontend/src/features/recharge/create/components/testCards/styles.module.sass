@@ -1,0 +1,37 @@
+@use '../../../../../styles/mixins' as m
+
+.card
+  @include m.card
+  display: flex
+  flex-direction: column
+  gap: var(--space-3)
+  padding: var(--space-5)
+
+.title
+  display: flex
+  align-items: center
+  gap: var(--space-2)
+  font-size: 1rem
+
+.note
+  color: var(--text-muted)
+  font-size: 0.9375rem
+
+.table
+  width: 100%
+  border-collapse: collapse
+  font-size: 0.875rem
+
+  th, td
+    padding: var(--space-2) var(--space-1)
+    border-bottom: 1px solid var(--border)
+    text-align: left
+    vertical-align: top
+
+  th
+    color: var(--text-muted)
+    font-weight: 600
+
+.mono
+  font-variant-numeric: tabular-nums
+  white-space: nowrap

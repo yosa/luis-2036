@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router'
 import { authRoutes } from '../features/auth/routes'
 import { dashboardRoutes } from '../features/dashboard/routes'
+import { rechargeRoutes } from '../features/recharge/routes'
 import { AppShell } from './appShell'
 import { ProtectedRoute, PublicOnlyRoute } from './guards'
 import { NotFound } from './notFound'
@@ -27,7 +28,7 @@ export const routes: RouteObject[] = [
       { element: <PublicOnlyRoute />, children: authRoutes },
       {
         element: <ProtectedRoute />,
-        children: [{ element: <AppShell />, children: dashboardRoutes }],
+        children: [{ element: <AppShell />, children: [...dashboardRoutes, ...rechargeRoutes] }],
       },
       ...devRoutes,
       { path: '*', element: <NotFound /> },

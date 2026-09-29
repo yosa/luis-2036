@@ -1,3 +1,4 @@
+import { chargeResponseSchema } from '@snail-race/shared'
 import { z } from 'zod'
 import { STORAGE_PREFIX } from '../constants'
 import { createStorageSlot } from './createStorageSlot'
@@ -47,5 +48,22 @@ export type Wallet = z.infer<typeof walletSchema>
 export const walletsSlot = createStorageSlot(
   key('wallets'),
   z.record(z.string(), walletSchema),
+  () => ({}),
+)
+
+export const chargeRecordSchema = z.object({
+  requestedAmountCents: z.number().int().positive(),
+  httpStatus: z.number().int(),
+  recordedAt: z.iso.datetime(),
+  credited: z.boolean(),
+  /** Respuesta completa de SnailPay, con número de tarjeta y CVV ficticios (RF-24, ADR 0006). */
+  response: chargeResponseSchema,
+})
+export type ChargeRecord = z.infer<typeof chargeRecordSchema>
+
+/** Historial de cobros por id de usuario. */
+export const chargesSlot = createStorageSlot(
+  key('charges'),
+  z.record(z.string(), z.array(chargeRecordSchema)),
   () => ({}),
 )

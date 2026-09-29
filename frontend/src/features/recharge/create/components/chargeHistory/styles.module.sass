@@ -1,0 +1,58 @@
+@use '../../../../../styles/mixins' as m
+
+.card
+  @include m.card
+  display: flex
+  flex-direction: column
+  gap: var(--space-3)
+  padding: var(--space-5)
+
+.title
+  font-size: 1rem
+
+.empty
+  color: var(--text-muted)
+
+.list
+  list-style: none
+  margin: 0
+  padding: 0
+  display: flex
+  flex-direction: column
+
+.item
+  display: grid
+  grid-template-columns: auto 1fr
+  gap: var(--space-1) var(--space-3)
+  align-items: center
+  padding: var(--space-3) 0
+  border-bottom: 1px solid var(--border)
+
+.badge
+  font-size: 0.8125rem
+  font-weight: 700
+  padding: 2px var(--space-2)
+  border-radius: 999px
+  border: 1px solid
+
+.approved
+  color: var(--accent-text)
+  background: var(--success-surface)
+
+.rejected
+  color: var(--danger)
+  background: var(--danger-surface)
+
+.error
+  color: var(--shell)
+  background: var(--warning-surface)
+
+.amount
+  font-weight: 700
+  font-variant-numeric: tabular-nums
+  text-align: right
+
+.meta
+  grid-column: 1 / -1
+  color: var(--text-muted)
+  font-size: 0.875rem

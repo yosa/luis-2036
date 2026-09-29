@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { Link, type LinkProps } from 'react-router'
 import styles from './styles.module.sass'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -31,5 +32,24 @@ export function Button({
       {isLoading ? <span className={styles.spinner} aria-hidden="true" /> : icon}
       <span>{isLoading ? loadingLabel : children}</span>
     </button>
+  )
+}
+
+/** Enlace con apariencia de botón (navegación, no acción): <a> semántico. */
+export function ButtonLink({
+  variant = 'primary',
+  icon,
+  children,
+  className,
+  ...rest
+}: Readonly<LinkProps & { variant?: 'primary' | 'secondary' | 'ghost'; icon?: ReactNode }>) {
+  return (
+    <Link
+      className={[styles.button, styles[variant], className].filter(Boolean).join(' ')}
+      {...rest}
+    >
+      {icon}
+      <span>{children}</span>
+    </Link>
   )
 }

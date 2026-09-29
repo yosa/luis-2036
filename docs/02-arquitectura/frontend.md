@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien desarrolla o revisa `frontend/`.
 > **Propósito:** cómo se organiza el código del frontend y por qué.
-> **Estado:** base técnica y sistema visual implementados (2026-09-28): tokens, storage tipado, tema, cliente HTTP, componentes base, `useZodForm` y catálogo `/dev/ui`. Auth terminado (registro, login, sesión, guards y `AppShell`). Dashboard terminado (saldo y gráficas). Pendiente: recarga.
+> **Estado:** base técnica y sistema visual implementados (2026-09-28): tokens, storage tipado, tema, cliente HTTP, componentes base, `useZodForm` y catálogo `/dev/ui`. Auth terminado (registro, login, sesión, guards y `AppShell`). Todas las pantallas terminadas: registro, login, dashboard y recarga.
 > **Estándar que aplica:** `estándar de React` (y el núcleo `estándar de frontend`) del ecosistema. Este documento solo registra lo propio del proyecto.
 
 ## Stack
@@ -17,7 +17,7 @@ Leyenda: ✅ ya existe · ⏳ llega con su feature.
 - ✅ `features/auth/` (registro, login, esquemas, rutas), `features/dashboard/overview` (saldo, dona y barras con `chartCard` accesible), `stores/wallet` (saldo que sigue a la sesión), `lib/raceDay`, `lib/money`, `stores/session`, `lib/crypto` y `storage/slots.ts` (usuarios y sesión).
 - ✅ `components/`: `button`, `textField`, `alert`, `themeToggle`, `brand`.
 - ✅ `hooks/useZodForm.ts`, `lib/http/`, `storage/createStorageSlot.ts`, `stores/theme/`, `constants/` y `styles/`.
-- ⏳ `features/recharge/`, `services/snailpay/`, la acreditación en `stores/wallet` y el slot de cobros.
+- ✅ `features/recharge/` (formulario, mensajes por resultado, tarjetas de prueba, historial), `services/snailpay`, `lib/wallet/creditRules` y el slot de cobros.
 
 Estructura objetivo:
 

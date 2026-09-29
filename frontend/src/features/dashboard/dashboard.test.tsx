@@ -31,7 +31,8 @@ describe('dashboard', () => {
 
     renderApp('/dashboard')
 
-    expect(await screen.findByText('$1,250.50')).toBeInTheDocument()
+    const balance = await screen.findByRole('region', { name: 'Saldo disponible' })
+    expect(within(balance).getByText('$1,250.50')).toBeInTheDocument()
   })
 
   it('la dona resume las apuestas del día simulado, coherentes con sus reglas', async () => {
