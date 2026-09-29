@@ -1,17 +1,25 @@
-import { useSessionStore } from '../../../stores/session'
+import { BalanceCard } from './components/balanceCard'
+import { BetsDonut } from './components/betsDonut'
+import { SnailWinsChart } from './components/snailWinsChart'
+import { useDashboard } from './useDashboard'
 import styles from './styles.module.sass'
 
-/** Pantalla posterior al inicio de sesión. Saldo, gráficas y recarga llegan en sus features. */
 export function DashboardPage() {
-  const fullName = useSessionStore((state) => state.user?.fullName ?? '')
-  const firstName = fullName.split(' ')[0]
+  const { firstName, balanceCents, raceDay } = useDashboard()
 
   return (
-    <section className={styles.page} aria-labelledby="dashboard-title">
-      <h1 id="dashboard-title">Hola, {firstName}</h1>
-      <p className={styles.lead}>
-        Bienvenido a la pista. Aquí verás tu saldo y a los ganadores del día.
-      </p>
-    </section>
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <h1>Hola, {firstName}</h1>
+        <p className={styles.lead}>Así va tu día en la pista.</p>
+      </header>
+      <div className={styles.grid}>
+        <BalanceCard balanceCents={balanceCents} />
+        <BetsDonut won={raceDay.betsSummary.won} lost={raceDay.betsSummary.lost} />
+        <div className={styles.wide}>
+          <SnailWinsChart winsBySnail={raceDay.winsBySnail} racesCount={raceDay.races.length} />
+        </div>
+      </div>
+    </div>
   )
 }

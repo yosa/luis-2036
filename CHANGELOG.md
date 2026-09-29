@@ -2,6 +2,13 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — dashboard
+
+- 📊 Dashboard con saldo (cifra principal), dona de apuestas y barras de victorias por caracol; datos simulados y deterministas por usuario y día.
+- 🎨 Paleta de gráficas validada con script: "perdidas" pasa de gris a violeta (no cumplía el croma mínimo). Vista de tabla, tooltip y resumen en texto en cada gráfica.
+- 🏛️ ADR 0007 **aceptado**. RF-06, RF-08, RF-11, RF-12 y RF-13 terminados.
+- **Reflejado en:** [estado](docs/01-alcance/estado.md) · [ADR 0007](docs/02-arquitectura/adr/0007-datos-simulados-de-graficas.md) · [sistema visual](docs/04-diseno/sistema-visual.md)
+
 ## 2026-09-28 (noche) — registro, login y sesión
 
 - 🔐 Registro y login locales con hash PBKDF2 (600 000 iteraciones); sesión de 8 h; guards; header con nombre y cerrar sesión. **Los cuatro mínimos de validez se cumplen.**

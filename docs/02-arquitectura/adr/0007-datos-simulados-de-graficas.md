@@ -1,6 +1,6 @@
 # ADR 0007 — Datos simulados y deterministas para las gráficas
 
-- **Estado**: Propuesto
+- **Estado**: Aceptado (2026-09-28)
 - **Fecha**: 2026-09-28
 - **Decide**: Luis Heredia
 - **Reemplaza**: —
@@ -42,3 +42,10 @@ Los datos deben ser **coherentes con esas reglas**. No se construye una sección
 | `Math.random` en cada render                             | Trivial                               | Cambia al recargar y no se puede probar      | ❌         |
 | Datos fijos a mano (JSON)                                | Simple                                | No demuestra la regla y se ven igual siempre | Descartado |
 | Donut sobre un historial de varios días                  | Números más grandes                   | Se desacopla del día que muestran las barras | Descartado |
+
+## Cómo quedó construido
+
+- [`lib/raceDay`](../../../frontend/src/lib/raceDay/raceDay.ts): PRNG mulberry32 con una semilla FNV-1a de `usuario:fecha local`. Las invariantes (6 carreras, suma 6, apuestas coherentes con los ganadores, determinismo) se prueban sobre 200 semillas en [`raceDay.test.ts`](../../../frontend/src/lib/raceDay/raceDay.test.ts).
+- **Dona:** el alcance la pide. La guía de visualización usada recomienda un medidor para una proporción de dos partes, así que la dona lleva el porcentaje escrito en el centro, la leyenda con conteos, un tooltip y una vista de tabla. No depende del color.
+- **Barras horizontales,** porque los nombres son largos. Es una sola serie, así que no lleva leyenda. Tienen el valor al final de cada barra y un tope mínimo para que un "0" no parezca un dato faltante. El resumen en texto anuncia al líder o el empate.
+- **Colores ganadas/perdidas validados con script** (separación para daltonismo, luminosidad, croma y contraste) en los dos modos. El gris inicial para "perdidas" no pasaba el croma mínimo y se cambió por violeta, que además evita el par rojo/verde.

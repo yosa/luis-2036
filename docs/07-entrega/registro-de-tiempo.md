@@ -13,7 +13,8 @@
 | 2026-09-28 20:51–20:55 | Puesta al día de la documentación                                                     | 0 h 04 min    |                                                                           |
 | 2026-09-28 20:55–21:00 | Colección Postman y Newman                                                            | 0 h 05 min    |                                                                           |
 | 2026-09-28 21:00–21:06 | Registro, login, sesión y guards, con pruebas y recorrido en Chrome                   | 0 h 06 min    |                                                                           |
+| 2026-09-28 21:06–21:14 | Dashboard: saldo, dona y barras, paleta validada, pruebas y revisión en Chrome        | 0 h 08 min    |                                                                           |
 
 > Los tiempos salen de las marcas de tiempo de archivos y commits, así que son aproximados al minuto.
 
-**Total del alcance principal (sin estándares):** 1 h 26 min hasta ahora.
+**Total del alcance principal (sin estándares):** 1 h 34 min hasta ahora.

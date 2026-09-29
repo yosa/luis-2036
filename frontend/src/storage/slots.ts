@@ -36,3 +36,16 @@ export const usersSlot = createStorageSlot(
 )
 
 export const sessionSlot = createStorageSlot(key('session'), sessionSchema.nullable(), () => null)
+
+export const walletSchema = z.object({
+  balanceCents: z.number().int().nonnegative(),
+  appliedChargeIds: z.array(z.string()),
+})
+export type Wallet = z.infer<typeof walletSchema>
+
+/** Monedero por id de usuario. Un usuario sin monedero empieza en $0 (RF-08). */
+export const walletsSlot = createStorageSlot(
+  key('wallets'),
+  z.record(z.string(), walletSchema),
+  () => ({}),
+)
