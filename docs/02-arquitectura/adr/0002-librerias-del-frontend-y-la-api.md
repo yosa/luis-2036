@@ -14,7 +14,7 @@ El stack base viene dado: React, Express y TypeScript. Sobre él hay que elegir 
 | Necesidad          | Librería                                                    | Razón                                                                                                                              |
 | ------------------ | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Build del frontend | **Vite**                                                    | Estándar de facto para React sin framework, arranque rápido y soporte nativo de TypeScript y CSS Modules                           |
-| Rutas              | **React Router 7** (modo librería)                          | Guards como layout routes; sin SSR porque es una SPA                                                                               |
+| Rutas              | **React Router 8** (modo librería)                          | Guards como layout routes; sin SSR porque es una SPA                                                                               |
 | Estado             | **Zustand**                                                 | Lo más parecido a los setup stores de Pinia: un store por dominio con acciones dentro, selectores y sin provider                   |
 | Validación         | **zod**                                                     | Un esquema para validar y tipar a la vez, compartido entre frontend y API                                                          |
 | Gráficas           | **Recharts**                                                | Declarativa en React; el donut (`PieChart` con `innerRadius`) y las barras están listos, y es accesible con etiquetas              |
@@ -40,6 +40,17 @@ El stack base viene dado: React, Express y TypeScript. Sobre él hay que elegir 
 | Tailwind (estilos)                     | Rápido de escribir | Segundo sistema paralelo a los tokens del ecosistema              | Descartado                                                                   |
 | Librería de componentes completa (MUI) | Muchos componentes | Pesada e impone su propio sistema visual                          | Descartado; si hace falta, primitivas accesibles sueltas (p. ej. un diálogo) |
 | Jest                                   | Muy conocido       | Configuración extra con ESM y Vite                                | Descartado a favor de Vitest                                                 |
+
+## Versiones fijadas y por qué
+
+Al instalar (2026-09-28) se eligió la última versión de cada librería, salvo dos excepciones forzadas por compatibilidad:
+
+| Paquete       | Versión          | Motivo                                                                                                                                                |
+| ------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript    | **6.0** (no 7.0) | `typescript-eslint` solo admite `<6.1`; con TypeScript 7 se pierde el lint type-aware                                                                 |
+| ESLint        | **9** (no 10)    | `eslint-plugin-jsx-a11y` solo admite hasta ESLint 9; npm ya marca la 9 como sin soporte. Se revisa cuando el plugin publique compatibilidad           |
+| React Router  | 8                | Mantiene la API de data router (`createBrowserRouter`, `RouterProvider` en `react-router/dom`); sus cambios incompatibles no afectan al modo librería |
+| Vite / Vitest | 8 / 5            | Últimas versiones, compatibles entre sí                                                                                                               |
 
 ## Pendientes
 

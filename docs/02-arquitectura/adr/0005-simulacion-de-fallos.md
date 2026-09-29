@@ -1,6 +1,6 @@
 # ADR 0005 — Simulación de errores de transacción, del sistema y de timeout
 
-- **Estado**: Propuesto
+- **Estado**: Aceptado (2026-09-28)
 - **Fecha**: 2026-09-28
 - **Decide**: Luis Heredia
 - **Reemplaza**: —
@@ -53,6 +53,13 @@ El alcance deja al proyecto decidir **qué errores de transacción simular**. Ad
 | Encabezado `X-Simulate`                    | Flexible                                                   | La UI no lo manda; quien evalúa necesitaría herramientas | Descartado                |
 | Fallos aleatorios (p. ej. el 10 %)         | "Realista"                                                 | No es reproducible ni se puede probar                    | ❌                        |
 | Timeout simulado solo en el cliente        | Rápido                                                     | No prueba la cancelación real de la petición             | Descartado                |
+
+## Cómo quedó construido
+
+- Tabla de escenarios como función pura, `resolveScenario(request, now)`, en [`scenarios.ts`](../../../api/src/modules/snailpay/createCharge/scenarios.ts), con el orden de evaluación documentado. Probada fila por fila en [`scenarios.test.ts`](../../../api/test/unit/scenarios.test.ts).
+- La caída por `SNAILPAY_OUTAGE` se evalúa en el service **antes** de validar la solicitud.
+- La demora del timeout se configura con `SNAILPAY_PROCESSING_DELAY_MS` (12 000 por defecto) y se inyecta como `sleep`, así que las pruebas no esperan. Verificado a mano: 504 tras la demora.
+- Rate limit de 20 cobros por minuto por IP (`CHARGES_RATE_LIMIT_PER_MINUTE`).
 
 ## Pendientes
 

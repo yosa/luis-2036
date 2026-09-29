@@ -15,11 +15,11 @@
 
 | ID                                                             | Título                                                         | Estado    |
 | -------------------------------------------------------------- | -------------------------------------------------------------- | --------- |
-| [0001](0001-organizacion-del-repositorio.md)                   | Organización del repositorio: monorepo con npm workspaces      | Propuesto |
+| [0001](0001-organizacion-del-repositorio.md)                   | Organización del repositorio: monorepo con npm workspaces      | Aceptado  |
 | [0002](0002-librerias-del-frontend-y-la-api.md)                | Librerías del frontend y de la API                             | Propuesto |
 | [0003](0003-tratamiento-de-la-contrasena.md)                   | Tratamiento de la contraseña: PBKDF2 con Web Crypto            | Propuesto |
-| [0004](0004-contrato-de-snailpay.md)                           | Contrato de SnailPay y regla contra falsos éxitos              | Propuesto |
-| [0005](0005-simulacion-de-fallos.md)                           | Simulación de errores de transacción, del sistema y de timeout | Propuesto |
+| [0004](0004-contrato-de-snailpay.md)                           | Contrato de SnailPay y regla contra falsos éxitos              | Aceptado  |
+| [0005](0005-simulacion-de-fallos.md)                           | Simulación de errores de transacción, del sistema y de timeout | Aceptado  |
 | [0006](0006-datos-de-tarjeta-en-respuesta-y-almacenamiento.md) | Número de tarjeta y CVV en la respuesta y en LocalStorage      | Propuesto |
 | [0007](0007-datos-simulados-de-graficas.md)                    | Datos simulados y deterministas para las gráficas              | Propuesto |
 | [0008](0008-despliegue.md)                                     | Despliegue: API en Lambda y frontend en S3/CloudFront          | Propuesto |

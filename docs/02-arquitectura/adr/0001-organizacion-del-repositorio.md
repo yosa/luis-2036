@@ -1,6 +1,6 @@
 # ADR 0001 — Organización del repositorio: monorepo con npm workspaces
 
-- **Estado**: Propuesto
+- **Estado**: Aceptado (2026-09-28)
 - **Fecha**: 2026-09-28
 - **Decide**: Luis Heredia
 - **Reemplaza**: —
@@ -31,6 +31,12 @@ La entrega es **un solo repositorio git** con frontend, backend y documentación
 | Dos carpetas independientes sin workspaces | Simple                                         | Dos instalaciones y el contrato duplicado | Descartado                   |
 | Turborepo / Nx                             | Caché de tareas                                | Sobredimensionado para dos paquetes       | Descartado                   |
 
+## Cómo quedó construido
+
+- Workspaces `shared`, `api` y `frontend` en el [`package.json`](../../../package.json) raíz; `package-lock.json` versionado.
+- El contrato vive en un tercer workspace, [`shared/`](../../../shared/src/snailpay/charge.ts) (`@snail-race/shared`), que exporta TypeScript directamente sin paso de build: `tsx`/esbuild en el API y Vite en el frontend lo compilan al consumirlo.
+- Scripts raíz: `dev`, `test`, `type-check`, `lint`, `format` y `check` (todo junto).
+
 ## Pendientes
 
-- Fijar la ubicación del contrato compartido al hacer el scaffold.
+Ninguno.

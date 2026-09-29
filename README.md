@@ -7,15 +7,15 @@ Aplicación web de temática de apuestas en carreras de caracoles:
 
 Frontend en **React + TypeScript**, backend en **Express + TypeScript**, persistencia del usuario, la sesión y el saldo en **LocalStorage**.
 
-> **Estado:** estructura y documentación base listas; el desarrollo aún no empieza.
+> **Estado (2026-09-28):** SnailPay (API) terminado y probado; frontend con base técnica y sistema visual. En curso: registro/login, dashboard y recarga.
 > La matriz de lo terminado y lo pendiente vive en [`docs/01-alcance/estado.md`](docs/01-alcance/estado.md), y es la única fuente de verdad del avance.
 
 ## Inicio rápido
 
-> ⏳ Se completa al terminar el scaffold de `api/` y `frontend/` (ver [`docs/06-operacion/ejecutar-local.md`](docs/06-operacion/ejecutar-local.md)).
+Requiere Node 22.22 o superior. Detalle y variables en [`docs/06-operacion/ejecutar-local.md`](docs/06-operacion/ejecutar-local.md).
 
 ```bash
-npm install          # instala api/ y frontend/ (npm workspaces)
+npm install          # instala shared/, api/ y frontend/ (npm workspaces)
 npm run dev          # levanta API (:3000) y frontend (:5173)
 npm test             # pruebas de ambos paquetes
 ```
@@ -23,6 +23,7 @@ npm test             # pruebas de ambos paquetes
 ## Estructura del repositorio
 
 ```
+shared/      contrato de SnailPay (esquemas zod) compartido por api y frontend
 api/         Express + TypeScript — servicio SnailPay
 frontend/    React + Vite + TypeScript — registro, sesión, dashboard y recarga
 docs/        documentación del proyecto (índice abajo)

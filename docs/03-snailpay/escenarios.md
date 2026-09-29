@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien evalúa o prueba la integración.
 > **Propósito:** los datos exactos que producen cada respuesta de SnailPay, para reproducirla desde la interfaz o con `curl`.
-> **Estado:** definidos, pendientes de implementar. Al terminar, cada fila enlaza la prueba automatizada que la cubre.
+> **Estado:** implementados en el API. Las filas 1 a 12 se prueban en [`scenarios.test.ts`](../../api/test/unit/scenarios.test.ts) y [`createChargeService.test.ts`](../../api/test/unit/createChargeService.test.ts); la 13 (JSON malformado) y la 14 (rate limit), en [`charges.test.ts`](../../api/test/feature/charges.test.ts).
 
 **Todos los números de tarjeta son ficticios.** Ninguno corresponde a una tarjeta real. SnailPay no valida el dígito de Luhn: la tarjeta de éxito del alcance (`1234123412341234`) no lo cumple y aun así debe aprobarse.
 

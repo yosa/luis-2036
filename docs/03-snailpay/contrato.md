@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien integra con SnailPay (el frontend) y quien revisa las respuestas.
 > **Propósito:** la forma exacta de la solicitud y de todas las respuestas de un cobro.
-> **Estado:** contrato propuesto, pendiente de implementar. Se congela al aceptar el [ADR 0004](../02-arquitectura/adr/0004-contrato-de-snailpay.md).
+> **Estado:** implementado y congelado ([ADR 0004](../02-arquitectura/adr/0004-contrato-de-snailpay.md) aceptado). La definición ejecutable es el esquema zod de [`shared/src/snailpay/charge.ts`](../../shared/src/snailpay/charge.ts), validado en las [pruebas HTTP](../../api/test/feature/charges.test.ts).
 
 ## Endpoint
 
@@ -107,4 +107,4 @@ Cómo producir cada uno: [escenarios](escenarios.md).
 
 **Error del sistema (503)**: la misma forma con `"status": "error"`, `"status_detail": "service_unavailable"`, `"authorization_code": null` y el encabezado `Retry-After: 30`.
 
-> Estos ejemplos son de referencia mientras se implementa. Al terminar, se validan contra las pruebas del API y se enlaza la prueba que los fija.
+> La respuesta aprobada de arriba se obtuvo del API real con `curl` (con otros `id`, códigos y fechas). Las formas de todas las respuestas las fijan las pruebas del API.

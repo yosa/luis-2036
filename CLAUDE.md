@@ -57,7 +57,11 @@ Conventional Commits en español. El título lleva el tipo de mayor peso (`feat`
 
 ```bash
 git config core.hooksPath .githooks   # una vez por clon: activa el hook de referencias
-scripts/check-referencias.sh          # verificación manual
+npm run dev                           # API :3000 + frontend :5173
+npm run check                         # type-check + lint + formato + pruebas (antes de cada commit)
+scripts/check-referencias.sh          # verificación manual de términos vetados
 ```
 
-Los comandos de desarrollo y pruebas se agregan al terminar el scaffold (ver `docs/06-operacion/ejecutar-local.md`).
+## Flujo de trabajo
+
+Una rama por feature (`feat/…`, `docs/…`), con sus pruebas y **la actualización de `estado.md`, ADR, CHANGELOG y guías en la misma rama**. Antes del commit se muestra el diff y, si hay UI, se revisa en el navegador. Merge `--no-ff` a `main`.
