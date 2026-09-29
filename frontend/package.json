@@ -1,0 +1,38 @@
+{
+  "name": "@snail-race/web",
+  "private": true,
+  "description": "Frontend: registro local, dashboard y recarga con SnailPay (React + Vite + TypeScript)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "start-server-and-test \"vite build && vite preview --port 4173 --strictPort\" http://localhost:4173 \"cypress run --e2e\"",
+    "type-check": "tsc -b"
+  },
+  "dependencies": {
+    "@snail-race/shared": "*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router": "^8.4.0",
+    "recharts": "^3.10.1",
+    "zod": "^4.6.5",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "cypress": "^16.1.0",
+    "jsdom": "^30.1.1",
+    "sass-embedded": "^1.105.0",
+    "start-server-and-test": "^3.0.12",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}
