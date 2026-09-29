@@ -2,18 +2,18 @@
 
 > **Audiencia:** quien revisa la entrega.
 > **Propósito:** la **única fuente de verdad** de qué está terminado. Una fila solo pasa a ✅ cuando tiene evidencia enlazada: una prueba automatizada o el archivo que la implementa. Se actualiza en el mismo commit que cambia el código.
-> **Última actualización:** 2026-09-28, 21:23. **Todos los requisitos funcionales terminados.** Pendientes: E2E con Cypress, PDF de respuesta, repositorio en GitHub y adicionales (despliegue y propuesta de BD).
+> **Última actualización:** 2026-09-28, 22:14. Todos los requisitos funcionales terminados y probados de punta a punta (E2E). Pendientes: PDF de respuesta, repositorio en GitHub y adicionales (despliegue y propuesta de BD).
 
 Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta) · ⏳ pendiente · ❌ fuera de alcance / no se hará
 
 ## Mínimos de validez
 
-| Mínimo                                               | Estado | Evidencia                                                                                                       |
-| ---------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------- |
-| Registrar un usuario con correo y contraseña         | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx) (flujo con el router real) · revisado en Chrome |
-| Cerrar sesión                                        | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx)                                                 |
-| Iniciar sesión de nuevo con los datos registrados    | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx)                                                 |
-| Acceder a una pantalla posterior al inicio de sesión | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx): `/dashboard` protegido                         |
+| Mínimo                                               | Estado | Evidencia                                                                                                                                                                 |
+| ---------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Registrar un usuario con correo y contraseña         | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx) (flujo con el router real) · E2E [auth.cy.ts](../../frontend/cypress/e2e/auth.cy.ts) · revisado en Chrome |
+| Cerrar sesión                                        | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx)                                                                                                           |
+| Iniciar sesión de nuevo con los datos registrados    | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx)                                                                                                           |
+| Acceder a una pantalla posterior al inicio de sesión | ✅     | [auth.test.tsx](../../frontend/src/features/auth/auth.test.tsx): `/dashboard` protegido                                                                                   |
 
 ## Requisitos funcionales
 
@@ -53,7 +53,7 @@ Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta
 | RNF-03 | Herramientas de UI documentadas       | ✅     | [sistema visual](../04-diseno/sistema-visual.md): herramientas, qué se generó y qué se construyó                                                                                                                                                           |
 | RNF-04 | Uso de IA documentado                 | 🟡     | [uso de IA](../07-entrega/uso-de-ia.md): bitácora al día                                                                                                                                                                                                   |
 | RNF-05 | Buenas prácticas                      | ✅     | Lint type-aware con Sonar, Prettier, contrato compartido, hook de referencias, una rama por feature con pruebas y docs                                                                                                                                     |
-| RNF-06 | Pruebas automatizadas                 | 🟡     | 40 en API, 96 en frontend y Smoke de Postman ([estrategia](../05-calidad-y-pruebas/estrategia-de-pruebas.md)). Falta el E2E con Cypress                                                                                                                    |
+| RNF-06 | Pruebas automatizadas                 | ✅     | 40 en API, 96 en frontend, 6 E2E con Cypress contra el build y Smoke de Postman ([estrategia](../05-calidad-y-pruebas/estrategia-de-pruebas.md))                                                                                                           |
 | RNF-07 | Errores y timeout                     | ✅     | Timeout real (API 12 s, cliente 8 s), sin red y respuesta fuera de contrato, cada uno con su mensaje ([recharge.test.tsx](../../frontend/src/features/recharge/recharge.test.tsx), [httpRequest.test.ts](../../frontend/src/lib/http/httpRequest.test.ts)) |
 | RNF-08 | Sin referencias identificables        | ✅     | `scripts/check-referencias.sh` + hook `pre-commit`                                                                                                                                                                                                         |
 | E-01   | PDF de respuesta                      | ⏳     | —                                                                                                                                                                                                                                                          |

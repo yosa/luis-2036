@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa las pruebas y quien las corre.
 > **Propósito:** qué se prueba, **por qué se eligió** y cómo se ejecuta (RNF-06, E-03).
-> **Estado:** 136 pruebas implementadas (40 en el API, 96 en el frontend) más el Smoke de Postman. La tabla "Qué se prueba" es el plan completo; "Pruebas implementadas" dice qué existe hoy.
+> **Estado:** 136 pruebas unitarias y de integración (40 en el API, 96 en el frontend), 6 E2E con Cypress y el Smoke de Postman. La tabla "Qué se prueba" es el plan completo; "Pruebas implementadas" dice qué existe hoy.
 
 ## Criterio
 
@@ -56,6 +56,5 @@ npm test -w @snail-race/api                # solo el API
 npm test -w @snail-race/web                # solo el frontend
 npm run check                              # type-check + lint + formato + pruebas (lo que corre antes de cada commit)
 npm run test:postman -w @snail-race/api    # Smoke de Postman con Newman contra el API en :3000
+npm run test:e2e                           # E2E con Cypress: build + vite preview + cypress run (≈ 40 s)
 ```
-
-> ⏳ E2E con Cypress (`npm run test:e2e`) llega en su propia rama.

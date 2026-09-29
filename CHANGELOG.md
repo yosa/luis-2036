@@ -2,6 +2,12 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — E2E con Cypress
+
+- 🧪 6 pruebas E2E contra el build de producción: los cuatro mínimos de validez, persistencia al recargar, guard y recarga (aprobada, rechazada y timeout real). Selección por label y rol. El gate se verificó con un canario que falla.
+- 🏛️ ADR 0002 **aceptado**: ya se usan todas sus librerías.
+- **Reflejado en:** [estado](docs/01-alcance/estado.md) · [pruebas](docs/05-calidad-y-pruebas/estrategia-de-pruebas.md)
+
 ## 2026-09-28 (noche) — recarga con SnailPay
 
 - 💳 Recarga de punta a punta: formulario validado con los patrones del contrato, llamada a SnailPay con los datos del usuario, saldo actualizado de inmediato (también en el header) e historial con la tarjeta enmascarada.
