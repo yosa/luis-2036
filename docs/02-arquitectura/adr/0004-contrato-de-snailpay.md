@@ -20,21 +20,23 @@ SnailPay simula una **pasarela de pagos externa**. El alcance fija los campos qu
 ## Consecuencias
 
 **Positivas**:
+
 - El cliente tiene un solo parser.
 - RF-22 se cumple incluso en errores inesperados.
 - La acreditación depende de cinco condiciones verificables y probadas, no de interpretar un mensaje.
 
 **Negativas / costos**:
+
 - El API tiene dos formatos de respuesta (el del proveedor en `/charges` y el envelope en el resto). Se documenta aquí y en [api.md](../api.md).
 
 ## Alternativas evaluadas
 
-| Opción | Pros | Contras | Veredicto |
-|---|---|---|---|
-| **Contrato de proveedor en todas las respuestas de cobro** | Fiel a una pasarela real; un parser; RF-22 siempre | Se aparta del envelope | ✅ |
-| Envelope con los campos dentro de `data` | Sigue el estándar | Un rechazo tendría `success: false` y `data: null`, lo que pierde los campos que exige el alcance | Descartado |
-| Siempre HTTP 200 y solo `status` | Simple | Oculta los errores a proxies, logs y monitoreo | Descartado |
-| Rechazos como 200 con `status: rejected` (estilo de algunas pasarelas) | Común en la industria | Menos explícito para quien integra por primera vez | Descartado a favor de 402/422 |
+| Opción                                                                 | Pros                                               | Contras                                                                                           | Veredicto                     |
+| ---------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **Contrato de proveedor en todas las respuestas de cobro**             | Fiel a una pasarela real; un parser; RF-22 siempre | Se aparta del envelope                                                                            | ✅                            |
+| Envelope con los campos dentro de `data`                               | Sigue el estándar                                  | Un rechazo tendría `success: false` y `data: null`, lo que pierde los campos que exige el alcance | Descartado                    |
+| Siempre HTTP 200 y solo `status`                                       | Simple                                             | Oculta los errores a proxies, logs y monitoreo                                                    | Descartado                    |
+| Rechazos como 200 con `status: rejected` (estilo de algunas pasarelas) | Común en la industria                              | Menos explícito para quien integra por primera vez                                                | Descartado a favor de 402/422 |
 
 ## Pendientes
 

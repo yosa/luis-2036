@@ -14,12 +14,12 @@
 
 ## Claves
 
-| Clave | Contenido | Se borra al cerrar sesión |
-|---|---|---|
-| `snail-race:v1:users` | Mapa `email → { id, fullName, email, password: { algorithm, iterations, salt, hash }, createdAt }` | No |
-| `snail-race:v1:session` | `{ userId, createdAt, expiresAt }` | **Sí** |
-| `snail-race:v1:wallets` | Mapa `userId → { balanceCents, appliedChargeIds: string[] }` | No |
-| `snail-race:v1:charges` | Mapa `userId → ChargeRecord[]`: la respuesta completa de SnailPay, incluidos `card_number` y `cvv`, más el monto pedido y la fecha local | No |
+| Clave                   | Contenido                                                                                                                                | Se borra al cerrar sesión |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `snail-race:v1:users`   | Mapa `email → { id, fullName, email, password: { algorithm, iterations, salt, hash }, createdAt }`                                       | No                        |
+| `snail-race:v1:session` | `{ userId, createdAt, expiresAt }`                                                                                                       | **Sí**                    |
+| `snail-race:v1:wallets` | Mapa `userId → { balanceCents, appliedChargeIds: string[] }`                                                                             | No                        |
+| `snail-race:v1:charges` | Mapa `userId → ChargeRecord[]`: la respuesta completa de SnailPay, incluidos `card_number` y `cvv`, más el monto pedido y la fecha local | No                        |
 
 Guardar el número de tarjeta y el CVV en `charges` es un requisito explícito del alcance (RF-24), y ahí terminan los datos ficticios de prueba. La interfaz los muestra **enmascarados** (`•••• 1234`) y nunca vuelve a mostrar el CVV. La justificación y la alternativa de producción están en el [ADR 0006](adr/0006-datos-de-tarjeta-en-respuesta-y-almacenamiento.md).
 

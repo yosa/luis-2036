@@ -5,13 +5,13 @@ Idioma de trabajo: español (documentación, commits, comentarios); identificado
 
 ## Regla de oro
 
-| # | Regla | Por qué |
-|---|---|---|
-| 1 | **Nada versionado puede nombrar a la organización que encargó el proyecto ni describirlo como evaluación.** El hook `pre-commit` corre `scripts/check-referencias.sh` con la lista privada `.private/terminos.txt`. | Requisito de la entrega: el repo es público y no debe ser encontrable por esos términos. |
-| 2 | **`docs/01-alcance/estado.md` dice la verdad del código.** Una funcionalidad solo se marca ✅ si hay evidencia (prueba o archivo) enlazada. Al terminar o romper algo, se actualiza en el mismo commit. | Una discrepancia entre lo declarado como terminado y el código se penaliza. |
-| 3 | **Todo lo que se escribe hay que poder explicarlo.** Nada de código generado sin revisar: cada decisión no obvia tiene su ADR o su comentario. | Se puede pedir defender o modificar cualquier parte. |
-| 4 | **El alcance es el de `requisitos.md`.** No se construye sección de apuestas ni motor de carreras; los datos de las gráficas son simulados. | Lo pide el alcance; tiempo objetivo de 6 a 8 horas. |
-| 5 | **Los datos de tarjeta siempre son ficticios.** Los números de prueba están en `docs/03-snailpay/escenarios.md`. | La pasarela es un mock; nunca debe tocar datos reales. |
+| #   | Regla                                                                                                                                                                                                               | Por qué                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| 1   | **Nada versionado puede nombrar a la organización que encargó el proyecto ni describirlo como evaluación.** El hook `pre-commit` corre `scripts/check-referencias.sh` con la lista privada `.private/terminos.txt`. | Requisito de la entrega: el repo es público y no debe ser encontrable por esos términos. |
+| 2   | **`docs/01-alcance/estado.md` dice la verdad del código.** Una funcionalidad solo se marca ✅ si hay evidencia (prueba o archivo) enlazada. Al terminar o romper algo, se actualiza en el mismo commit.             | Una discrepancia entre lo declarado como terminado y el código se penaliza.              |
+| 3   | **Todo lo que se escribe hay que poder explicarlo.** Nada de código generado sin revisar: cada decisión no obvia tiene su ADR o su comentario.                                                                      | Se puede pedir defender o modificar cualquier parte.                                     |
+| 4   | **El alcance es el de `requisitos.md`.** No se construye sección de apuestas ni motor de carreras; los datos de las gráficas son simulados.                                                                         | Lo pide el alcance; tiempo objetivo de 6 a 8 horas.                                      |
+| 5   | **Los datos de tarjeta siempre son ficticios.** Los números de prueba están en `docs/03-snailpay/escenarios.md`.                                                                                                    | La pasarela es un mock; nunca debe tocar datos reales.                                   |
 
 ## Estándares (leer antes de escribir código)
 

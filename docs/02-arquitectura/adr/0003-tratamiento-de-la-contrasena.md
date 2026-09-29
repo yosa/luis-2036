@@ -25,24 +25,26 @@ Detalle del flujo: [autenticación y sesión](../autenticacion-y-sesion.md).
 ## Consecuencias
 
 **Positivas**:
+
 - No hace falta ninguna dependencia.
 - Es asíncrono, así que no congela la interfaz.
 - Tiene sal por usuario y un factor de trabajo alto.
 - Se puede explicar y probar: la misma entrada con la misma sal da el mismo hash, y otra sal da otro hash.
 
 **Negativas / costos**:
+
 - 600 000 iteraciones tardan unos cientos de milisegundos por registro o login. Se acepta, y la UI muestra un estado de "procesando".
 - Hacer el hash en el cliente **no** protege frente a quien controla el navegador. Es una simulación, y así se declara.
 
 ## Alternativas evaluadas
 
-| Opción | Pros | Contras | Veredicto |
-|---|---|---|---|
-| **PBKDF2-SHA256 (Web Crypto)** | Nativo, auditado, asíncrono | Menos resistente a GPU que Argon2id | ✅ |
-| Argon2id (WASM) | El más recomendado hoy | Binario WASM extra para un alcance de simulación | Descartado; es la opción para producción en el servidor |
-| bcrypt en JS | Conocido | Lento en JS puro, bloquea el hilo y trunca a 72 bytes | Descartado |
-| SHA-256 sin sal | Trivial | Sin factor de trabajo; cae ante tablas precalculadas | ❌ |
-| Mandar la contraseña a Express para hashearla | Se parece a producción | Contradice la simulación local del alcance y el hash terminaría igual en el navegador | Descartado |
+| Opción                                        | Pros                        | Contras                                                                               | Veredicto                                               |
+| --------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| **PBKDF2-SHA256 (Web Crypto)**                | Nativo, auditado, asíncrono | Menos resistente a GPU que Argon2id                                                   | ✅                                                      |
+| Argon2id (WASM)                               | El más recomendado hoy      | Binario WASM extra para un alcance de simulación                                      | Descartado; es la opción para producción en el servidor |
+| bcrypt en JS                                  | Conocido                    | Lento en JS puro, bloquea el hilo y trunca a 72 bytes                                 | Descartado                                              |
+| SHA-256 sin sal                               | Trivial                     | Sin factor de trabajo; cae ante tablas precalculadas                                  | ❌                                                      |
+| Mandar la contraseña a Express para hashearla | Se parece a producción      | Contradice la simulación local del alcance y el hash terminaría igual en el navegador | Descartado                                              |
 
 ## Pendientes
 

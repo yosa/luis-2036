@@ -35,10 +35,10 @@ src/
 
 ## Endpoints
 
-| Método | Ruta | Propósito |
-|---|---|---|
+| Método | Ruta                   | Propósito                                                                            |
+| ------ | ---------------------- | ------------------------------------------------------------------------------------ |
 | `POST` | `/v1/snailpay/charges` | Solicita un cobro. Contrato completo en [`contrato.md`](../03-snailpay/contrato.md). |
-| `GET` | `/v1/health` | Salud del servicio. Reporta si la caída simulada está activa. |
+| `GET`  | `/v1/health`           | Salud del servicio. Reporta si la caída simulada está activa.                        |
 
 ## Decisiones propias del proyecto
 
