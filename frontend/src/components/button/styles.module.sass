@@ -1,0 +1,54 @@
+.button
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  gap: var(--space-2)
+  min-height: 44px
+  padding: var(--space-2) var(--space-5)
+  border: 1px solid transparent
+  border-radius: var(--radius-md)
+  font: inherit
+  font-weight: 700
+  cursor: pointer
+  transition: background-color var(--duration) ease, border-color var(--duration) ease, transform var(--duration) ease
+
+  &:active:not(:disabled)
+    transform: translateY(1px)
+
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.65
+
+.primary
+  background: var(--accent)
+  color: var(--on-accent)
+
+  &:hover:not(:disabled)
+    background: var(--accent-hover)
+
+.secondary
+  background: var(--surface-muted)
+  color: var(--text)
+  border-color: var(--border-strong)
+
+  &:hover:not(:disabled)
+    border-color: var(--text)
+
+.ghost
+  background: transparent
+  color: var(--text)
+
+  &:hover:not(:disabled)
+    background: var(--surface-muted)
+
+.spinner
+  width: 16px
+  height: 16px
+  border: 2px solid currentColor
+  border-right-color: transparent
+  border-radius: 50%
+  animation: spin 700ms linear infinite
+
+@keyframes spin
+  to
+    transform: rotate(360deg)
