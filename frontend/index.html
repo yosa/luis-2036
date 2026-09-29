@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Carreras de caracoles: tu saldo, tus apuestas y los ganadores del día."
+    />
+    <meta name="theme-color" content="#020617" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Carreras de caracoles</title>
+    <script>
+      // Anti-FOUC: fija el modo antes de que React pinte.
+      ;(function () {
+        var mode = null
+        try {
+          // El store guarda el valor como JSON ("light"), igual que todo slot de storage/.
+          mode = JSON.parse(localStorage.getItem('snail-race:theme'))
+        } catch (e) {}
+        if (mode !== 'light' && mode !== 'dark') {
+          mode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.dataset.mode = mode
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
