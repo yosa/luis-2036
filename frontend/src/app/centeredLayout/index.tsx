@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Brand } from '../../components/brand'
+import { ThemeToggle } from '../../components/themeToggle'
 import styles from './styles.module.sass'
 
 /** Layout de pantallas sin sesión: marca arriba y una tarjeta centrada. */
@@ -8,6 +9,7 @@ export function CenteredLayout({ children }: Readonly<{ children: ReactNode }>) 
     <div className={styles.layout}>
       <header className={styles.header}>
         <Brand />
+        <ThemeToggle />
       </header>
       <main className={styles.main}>{children}</main>
     </div>
