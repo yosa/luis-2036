@@ -1,0 +1,66 @@
+// Fuente de verdad del sistema visual. Modo oscuro por defecto en :root y
+// claro en [data-mode='light']. Un token nuevo se define en LOS DOS bloques.
+// Paleta de partida: ui-ux-pro-max (Dark Mode OLED, acento verde) ajustada
+// para AA en ambos modos (ver docs/04-diseno/sistema-visual.md).
+
+:root
+  color-scheme: dark
+  --bg: #020617
+  --surface: #0E1223
+  --surface-muted: #1A1E2F
+  --text: #F8FAFC
+  --text-muted: #94A3B8
+  --border: #1E293B
+  --border-strong: #64748B
+  --accent: #22C55E
+  --accent-hover: #4ADE80
+  --on-accent: #0F172A
+  --accent-text: #22C55E
+  --shell: #FBBF24
+  --danger: #F87171
+  --danger-surface: #2A1215
+  --success-surface: #0B2416
+  --warning-surface: #2A2008
+  --chart-won: #22C55E
+  --chart-lost: #64748B
+  --chart-bar: #FBBF24
+  --focus-ring: #F8FAFC
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35)
+
+  --font-heading: 'Fredoka Variable', 'Nunito Variable', system-ui, sans-serif
+  --font-body: 'Nunito Variable', system-ui, sans-serif
+  --radius-sm: 8px
+  --radius-md: 12px
+  --radius-lg: 20px
+  --space-1: 4px
+  --space-2: 8px
+  --space-3: 12px
+  --space-4: 16px
+  --space-5: 24px
+  --space-6: 32px
+  --space-7: 48px
+  --duration: 180ms
+
+[data-mode='light']
+  color-scheme: light
+  --bg: #F8FAFC
+  --surface: #FFFFFF
+  --surface-muted: #F1F5F9
+  --text: #0F172A
+  --text-muted: #475569
+  --border: #E2E8F0
+  --border-strong: #64748B
+  --accent: #15803D
+  --accent-hover: #166534
+  --on-accent: #FFFFFF
+  --accent-text: #15803D
+  --shell: #B45309
+  --danger: #B91C1C
+  --danger-surface: #FEF2F2
+  --success-surface: #F0FDF4
+  --warning-surface: #FFFBEB
+  --chart-won: #15803D
+  --chart-lost: #64748B
+  --chart-bar: #B45309
+  --focus-ring: #0F172A
+  --shadow: 0 1px 2px rgb(15 23 42 / 0.06), 0 8px 24px rgb(15 23 42 / 0.08)

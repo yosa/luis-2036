@@ -1,0 +1,16 @@
+@use '../../styles/mixins' as m
+
+.card
+  @include m.card
+  display: flex
+  flex-direction: column
+  gap: var(--space-3)
+  max-width: 420px
+  padding: var(--space-6)
+  text-align: center
+
+.text
+  color: var(--text-muted)
+
+.link
+  font-weight: 700
