@@ -2,36 +2,35 @@
 
 > **Audiencia:** quien desarrolla o revisa `api/`.
 > **Propósito:** cómo se organiza el código del backend y por qué.
-> **Estado:** diseño propuesto, pendiente de implementar.
+> **Estado:** implementado (2026-09-28). 40 pruebas; ver [estrategia de pruebas](../05-calidad-y-pruebas/estrategia-de-pruebas.md).
 > **Estándar que aplica:** `estándar de Express` del ecosistema. Este documento solo registra lo propio del proyecto.
 
 ## Stack
 
 Node 22 · Express 5 · TypeScript strict · zod · pino · helmet · cors · express-rate-limit · Vitest + supertest · `tsx` (desarrollo) · esbuild + `serverless-http` (despliegue).
 
-## Estructura prevista de `src/`
+## Estructura de `src/`
 
 ```
 src/
-  app.ts                          createApp(deps): middleware + rutas (sin listen)
+  app.ts                          createApp(deps): helmet, CORS, requestId, access log, rutas (sin listen)
+  container.ts                    cableado de producción: reloj real, ids aleatorios, sleep real
   server.ts                       arranque local
-  lambda.ts                       entrada para AWS Lambda
-  config/env.ts                   entorno validado con zod (fail-fast)
-  http/                           requestId, validate, errorHandler, notFound, respond
-  shared/errors/AppError.ts
+  lambda.ts                       entrada para AWS Lambda (serverless-http)
+  config/env.ts                   entorno validado con zod; si falta algo, no arranca
+  http/                           requestId, accessLog, logger (pino con redact), respond (envelope), errorHandler
+  shared/errors/AppError.ts       código dot.case + contexto + status semántico
   routes/index.ts                 agregador → /v1
-  routes/v1/snailpay.ts
-  routes/v1/health.ts
-  modules/
-    snailpay/
-      createCharge/
-        request.ts                esquema zod del cobro
-        handler.ts                single-action
-        service.ts                resuelve el escenario y arma la respuesta
-        scenarios.ts              tabla de escenarios (datos de entrada → resultado)
-        errors.ts
-        types.ts
+  routes/v1/health.ts             GET /v1/health (envelope)
+  routes/v1/snailpay.ts           POST /v1/snailpay/charges con parser, rate limit y errores propios del contrato
+  modules/snailpay/createCharge/
+    request.ts                    borde: valida con el contrato compartido y extrae el eco
+    scenarios.ts                  tabla de escenarios (función pura)
+    service.ts                    orden caída → inválido → escenario; arma toda respuesta
+    handler.ts                    single-action: parsea, llama al service, loguea y responde
 ```
+
+Pruebas en `test/unit/` (escenarios, service, parseo) y `test/feature/` (HTTP con supertest sobre `createApp` con dependencias falsas: reloj fijo, ids secuenciales, `sleep` inmediato).
 
 ## Endpoints
 

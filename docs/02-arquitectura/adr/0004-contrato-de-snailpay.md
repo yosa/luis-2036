@@ -1,6 +1,6 @@
 # ADR 0004 — Contrato de SnailPay y regla contra falsos éxitos
 
-- **Estado**: Propuesto
+- **Estado**: Aceptado (2026-09-28)
 - **Fecha**: 2026-09-28
 - **Decide**: Luis Heredia
 - **Reemplaza**: —
@@ -37,6 +37,14 @@ SnailPay simula una **pasarela de pagos externa**. El alcance fija los campos qu
 | Envelope con los campos dentro de `data`                               | Sigue el estándar                                  | Un rechazo tendría `success: false` y `data: null`, lo que pierde los campos que exige el alcance | Descartado                    |
 | Siempre HTTP 200 y solo `status`                                       | Simple                                             | Oculta los errores a proxies, logs y monitoreo                                                    | Descartado                    |
 | Rechazos como 200 con `status: rejected` (estilo de algunas pasarelas) | Común en la industria                              | Menos explícito para quien integra por primera vez                                                | Descartado a favor de 402/422 |
+
+## Cómo quedó construido
+
+- Contrato único en [`shared/src/snailpay/charge.ts`](../../../shared/src/snailpay/charge.ts): esquemas de solicitud y respuesta y catálogo cerrado de `status_detail`.
+- El API arma **toda** respuesta de cobro con el mismo builder ([`service.ts`](../../../api/src/modules/snailpay/createCharge/service.ts)), incluidos los fallos fuera del caso de uso (JSON malformado, rate limit, 500) mediante `failure()`.
+- Las rutas de SnailPay tienen su propio parser y manejo de errores ([`routes/v1/snailpay.ts`](../../../api/src/routes/v1/snailpay.ts)) para no caer en el envelope.
+- Pruebas: [contrato en HTTP](../../../api/test/feature/charges.test.ts) y [service](../../../api/test/unit/createChargeService.test.ts).
+- La regla contra falsos éxitos del cliente (punto 4) se implementa en la feature de recarga.
 
 ## Pendientes
 

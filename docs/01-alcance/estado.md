@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa la entrega.
 > **Propósito:** la **única fuente de verdad** de qué está terminado. Una fila solo pasa a ✅ cuando tiene evidencia enlazada: una prueba automatizada o el archivo que la implementa. Se actualiza en el mismo commit que cambia el código.
-> **Última actualización:** 2026-09-28. Estructura y documentación base; el desarrollo aún no empieza.
+> **Última actualización:** 2026-09-28, 20:51. SnailPay (API) terminado; frontend con la base técnica y el sistema visual. Faltan registro/login, dashboard y recarga.
 
 Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta) · ⏳ pendiente · ❌ fuera de alcance / no se hará
 
@@ -17,53 +17,56 @@ Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta
 
 ## Requisitos funcionales
 
-| ID    | Resumen                                                       | Estado | Evidencia | Notas                                      |
-| ----- | ------------------------------------------------------------- | ------ | --------- | ------------------------------------------ |
-| RF-01 | Registro con nombre, correo, contraseña y confirmación        | ⏳     | —         |                                            |
-| RF-02 | Validaciones, sin adjuntos                                    | ⏳     | —         |                                            |
-| RF-03 | Acceso tras registrarse                                       | ⏳     | —         |                                            |
-| RF-04 | Cerrar sesión                                                 | ⏳     | —         |                                            |
-| RF-05 | Login con correo y contraseña                                 | ⏳     | —         |                                            |
-| RF-06 | Persistencia al recargar                                      | ⏳     | —         |                                            |
-| RF-07 | Dashboard solo con sesión activa                              | ⏳     | —         |                                            |
-| RF-08 | Saldo inicial $0                                              | ⏳     | —         |                                            |
-| RF-09 | Tratamiento de la contraseña                                  | ⏳     | —         | ADR 0003                                   |
-| RF-10 | Nombre del usuario en el dashboard                            | ⏳     | —         |                                            |
-| RF-11 | Saldo actual                                                  | ⏳     | —         |                                            |
-| RF-12 | Donut de apuestas ganadas y perdidas                          | ⏳     | —         | ADR 0007                                   |
-| RF-13 | Barras de victorias por caracol                               | ⏳     | —         | ADR 0007                                   |
-| RF-14 | Opción de recargar con SnailPay                               | ⏳     | —         |                                            |
-| RF-15 | Opción de cerrar sesión                                       | ⏳     | —         |                                            |
-| RF-16 | SnailPay como mock en Express                                 | ⏳     | —         |                                            |
-| RF-17 | Datos de tarjeta, monto y datos del usuario por API           | ⏳     | —         | [contrato](../03-snailpay/contrato.md)     |
-| RF-18 | Cobro exitoso con la tarjeta de prueba                        | ⏳     | —         | [escenarios](../03-snailpay/escenarios.md) |
-| RF-19 | El saldo aumenta, se persiste y se muestra; aviso de aprobado | ⏳     | —         |                                            |
-| RF-20 | Errores de transacción con `status_detail`                    | ⏳     | —         | ADR 0005                                   |
-| RF-21 | Error del sistema documentado y sin recarga aplicada          | ⏳     | —         | ADR 0005                                   |
-| RF-22 | Los 9 campos en todas las respuestas                          | ⏳     | —         | ADR 0004                                   |
-| RF-23 | Sin cambio de saldo ni falso éxito en los fallos              | ⏳     | —         |                                            |
-| RF-24 | PAN y CVV ficticios en la respuesta y en LocalStorage         | ⏳     | —         | ADR 0006                                   |
+| ID    | Resumen                                                       | Estado | Evidencia                                                                                                                                                        | Qué falta                                 |
+| ----- | ------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| RF-01 | Registro con nombre, correo, contraseña y confirmación        | ⏳     | —                                                                                                                                                                | Feature `auth`                            |
+| RF-02 | Validaciones, sin adjuntos                                    | 🟡     | Mecanismo listo: [`useZodForm`](../../frontend/src/hooks/useZodForm.ts) + [prueba](../../frontend/src/hooks/useZodForm.test.tsx)                                 | Esquemas de registro y login              |
+| RF-03 | Acceso tras registrarse                                       | ⏳     | —                                                                                                                                                                | Feature `auth`                            |
+| RF-04 | Cerrar sesión                                                 | ⏳     | —                                                                                                                                                                | Feature `auth`                            |
+| RF-05 | Login con correo y contraseña                                 | ⏳     | —                                                                                                                                                                | Feature `auth`                            |
+| RF-06 | Persistencia al recargar                                      | 🟡     | Mecanismo listo: [`createStorageSlot`](../../frontend/src/storage/createStorageSlot.ts) + [prueba](../../frontend/src/storage/createStorageSlot.test.ts)         | Sesión, usuario y saldo                   |
+| RF-07 | Dashboard solo con sesión activa                              | ⏳     | —                                                                                                                                                                | Guards de ruta                            |
+| RF-08 | Saldo inicial $0                                              | ⏳     | —                                                                                                                                                                |                                           |
+| RF-09 | Tratamiento de la contraseña                                  | ⏳     | —                                                                                                                                                                | ADR 0003                                  |
+| RF-10 | Nombre del usuario en el dashboard                            | ⏳     | —                                                                                                                                                                |                                           |
+| RF-11 | Saldo actual                                                  | ⏳     | —                                                                                                                                                                |                                           |
+| RF-12 | Donut de apuestas ganadas y perdidas                          | ⏳     | —                                                                                                                                                                | ADR 0007                                  |
+| RF-13 | Barras de victorias por caracol                               | ⏳     | —                                                                                                                                                                | ADR 0007                                  |
+| RF-14 | Opción de recargar con SnailPay                               | ⏳     | —                                                                                                                                                                |                                           |
+| RF-15 | Opción de cerrar sesión                                       | ⏳     | —                                                                                                                                                                |                                           |
+| RF-16 | SnailPay como mock en Express                                 | ✅     | [`api/src/modules/snailpay/`](../../api/src/modules/snailpay/) · [pruebas HTTP](../../api/test/feature/charges.test.ts)                                          |                                           |
+| RF-17 | Datos de tarjeta, monto y datos del usuario por API           | 🟡     | API: [`request.ts`](../../api/src/modules/snailpay/createCharge/request.ts) + [prueba](../../api/test/unit/parseChargeRequest.test.ts)                           | Formulario de recarga en el frontend      |
+| RF-18 | Cobro exitoso con la tarjeta de prueba                        | 🟡     | API: [`scenarios.ts`](../../api/src/modules/snailpay/createCharge/scenarios.ts) + [prueba](../../api/test/unit/scenarios.test.ts)                                | Recarga desde la UI                       |
+| RF-19 | El saldo aumenta, se persiste y se muestra; aviso de aprobado | ⏳     | —                                                                                                                                                                | Feature `recharge`                        |
+| RF-20 | Errores de transacción con `status_detail`                    | 🟡     | API: 8 escenarios de rechazo con [prueba](../../api/test/unit/scenarios.test.ts)                                                                                 | Mensajes en la UI                         |
+| RF-21 | Error del sistema documentado y sin recarga aplicada          | 🟡     | API: `SNAILPAY_OUTAGE` y tarjetas `…0503`/`…0500` con [prueba](../../api/test/unit/createChargeService.test.ts); [escenarios](../03-snailpay/escenarios.md)      | Verificar en la UI que el saldo no cambia |
+| RF-22 | Los 9 campos en todas las respuestas                          | ✅     | [Contrato zod compartido](../../shared/src/snailpay/charge.ts) validado en [pruebas HTTP](../../api/test/feature/charges.test.ts), incluidos 400, 422, 429 y 503 |                                           |
+| RF-23 | Sin cambio de saldo ni falso éxito en los fallos              | 🟡     | API: `authorization_code` solo en aprobados ([prueba](../../api/test/unit/createChargeService.test.ts))                                                          | Regla de acreditación en el frontend      |
+| RF-24 | PAN y CVV ficticios en la respuesta y en LocalStorage         | 🟡     | API: eco de `card_number` y `cvv` ([prueba](../../api/test/unit/createChargeService.test.ts)); nunca en logs ([prueba](../../api/test/feature/charges.test.ts))  | Guardado en LocalStorage                  |
 
 ## Requisitos no funcionales y entregables
 
-| ID     | Resumen                               | Estado | Evidencia                                                              |
-| ------ | ------------------------------------- | ------ | ---------------------------------------------------------------------- |
-| RNF-01 | TypeScript en ambos lados             | ⏳     | —                                                                      |
-| RNF-02 | Interfaz clara y consistente          | ⏳     | —                                                                      |
-| RNF-03 | Herramientas de UI documentadas       | ⏳     | [sistema visual](../04-diseno/sistema-visual.md)                       |
-| RNF-04 | Uso de IA documentado                 | 🟡     | [uso de IA](../07-entrega/uso-de-ia.md): bitácora iniciada             |
-| RNF-05 | Buenas prácticas                      | ⏳     | —                                                                      |
-| RNF-06 | Pruebas automatizadas                 | ⏳     | [estrategia](../05-calidad-y-pruebas/estrategia-de-pruebas.md)         |
-| RNF-07 | Errores y timeout                     | ⏳     | —                                                                      |
-| RNF-08 | Sin referencias identificables        | ✅     | `scripts/check-referencias.sh` + hook `pre-commit`                     |
-| E-01   | PDF de respuesta                      | ⏳     | —                                                                      |
-| E-02   | Instrucciones para ejecutar           | ⏳     | [ejecutar local](../06-operacion/ejecutar-local.md)                    |
-| E-03   | Instrucciones de pruebas              | ⏳     | —                                                                      |
-| E-04   | Reproducir las respuestas de SnailPay | 🟡     | [escenarios](../03-snailpay/escenarios.md): definidos, sin implementar |
-| E-05   | Repositorio público en GitHub         | ⏳     | —                                                                      |
-| AD-01  | Aplicación desplegada                 | ⏳     | ADR 0008                                                               |
-| AD-02  | Propuesta de base de datos            | ⏳     | [propuesta](../07-entrega/propuesta-base-de-datos.md)                  |
+| ID     | Resumen                               | Estado | Evidencia                                                                                                                                  |
+| ------ | ------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| RNF-01 | TypeScript en ambos lados             | ✅     | `api/`, `frontend/` y `shared/` en TypeScript strict; `npm run type-check`                                                                 |
+| RNF-02 | Interfaz clara y consistente          | 🟡     | Tokens, componentes base y catálogo `/dev/ui` (solo en desarrollo). Faltan las pantallas                                                   |
+| RNF-03 | Herramientas de UI documentadas       | 🟡     | [sistema visual](../04-diseno/sistema-visual.md): paleta, tipografía y componentes. Faltan gráficas y layout del dashboard                 |
+| RNF-04 | Uso de IA documentado                 | 🟡     | [uso de IA](../07-entrega/uso-de-ia.md): bitácora al día                                                                                   |
+| RNF-05 | Buenas prácticas                      | 🟡     | Lint type-aware con Sonar, Prettier, hook de referencias, una rama por feature                                                             |
+| RNF-06 | Pruebas automatizadas                 | 🟡     | 40 pruebas en API y 23 en frontend ([estrategia](../05-calidad-y-pruebas/estrategia-de-pruebas.md)). Faltan auth, dashboard, recarga y E2E |
+| RNF-07 | Errores y timeout                     | 🟡     | API: escenario de timeout real. Cliente: [`HttpTimeoutError`](../../frontend/src/lib/http/httpRequest.test.ts). Falta el manejo en la UI   |
+| RNF-08 | Sin referencias identificables        | ✅     | `scripts/check-referencias.sh` + hook `pre-commit`                                                                                         |
+| E-01   | PDF de respuesta                      | ⏳     | —                                                                                                                                          |
+| E-02   | Instrucciones para ejecutar           | ✅     | [ejecutar local](../06-operacion/ejecutar-local.md), comprobado con `npm run dev`                                                          |
+| E-03   | Instrucciones de pruebas              | ✅     | [estrategia de pruebas](../05-calidad-y-pruebas/estrategia-de-pruebas.md#cómo-correrlas)                                                   |
+| E-04   | Reproducir las respuestas de SnailPay | 🟡     | [escenarios](../03-snailpay/escenarios.md) implementados y reproducibles con `curl`. Falta la colección de Postman                         |
+| E-05   | Repositorio público en GitHub         | ⏳     | —                                                                                                                                          |
+| AD-01  | Aplicación desplegada                 | ⏳     | ADR 0008                                                                                                                                   |
+| AD-02  | Propuesta de base de datos            | 🟡     | [propuesta](../07-entrega/propuesta-base-de-datos.md) en borrador                                                                          |
 
 ## Problemas conocidos
 
-Aún ninguno. Cada problema se registra aquí con cómo reproducirlo y, si se decide no corregirlo, por qué.
+| Problema                                                                                    | Cómo se reproduce                 | Plan                                                                             |
+| ------------------------------------------------------------------------------------------- | --------------------------------- | -------------------------------------------------------------------------------- |
+| Advertencia `No HydrateFallback element provided` en la consola de desarrollo               | Abrir `/dev/ui` con `npm run dev` | Se corrige al definir las rutas reales en la feature `auth`                      |
+| El estándar de React del ecosistema menciona React Router 7 y Vite 7; el proyecto usa 8 y 8 | —                                 | Se actualiza el estándar en un repositorio privado (fuera de este repo) |
