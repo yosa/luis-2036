@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Hook versionado. Se activa con: git config core.hooksPath .githooks
+set -euo pipefail
+"$(git rev-parse --show-toplevel)/scripts/check-referencias.sh"

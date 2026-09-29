@@ -1,0 +1,28 @@
+# Dependencias y builds
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+
+# Entorno: solo se versiona .env.example
+.env
+.env.*
+!.env.example
+
+# Cypress
+cypress/screenshots/
+cypress/videos/
+
+# Material privado (enunciado, términos vetados, borradores del documento de respuesta)
+.private/
+
+# Sistema / editor
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Los lock files SÍ se versionan (aplicación → instalaciones deterministas)
