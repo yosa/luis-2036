@@ -9,7 +9,9 @@
     "start": "node --env-file-if-exists=.env dist/server.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "type-check": "tsc --noEmit -p tsconfig.json"
+    "type-check": "tsc --noEmit -p tsconfig.json",
+    "test:postman": "newman run postman/snailpay.postman_collection.json -e postman/snailpay.local.postman_environment.template.json --folder Smoke --reporters cli,junit --reporter-junit-export postman/newman-report.xml",
+    "test:postman:local": "start-server-and-test dev http://localhost:3000/v1/health test:postman"
   },
   "dependencies": {
     "@snail-race/shared": "*",
@@ -27,6 +29,8 @@
     "@types/node": "^22.19.0",
     "@types/supertest": "^7.2.1",
     "esbuild": "^0.28.2",
+    "newman": "^6.2.2",
+    "start-server-and-test": "^3.0.12",
     "supertest": "^7.3.0",
     "tsx": "^4.23.15",
     "vitest": "^5.0.2"

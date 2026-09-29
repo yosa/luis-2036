@@ -36,16 +36,17 @@ Convenciones: los selectores van por rol, label o texto visible (sin `data-testi
 
 ## Pruebas implementadas
 
-| Archivo                                                                                                  | Pruebas | Qué fija                                                                                                                                                       |
-| -------------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`api/test/unit/scenarios.test.ts`](../../api/test/unit/scenarios.test.ts)                               | 15      | Cada escenario de la tabla; éxito aprobado después de 12/26; fallas del sistema antes que el vencimiento; vigencia hasta el último instante del mes            |
-| [`api/test/unit/createChargeService.test.ts`](../../api/test/unit/createChargeService.test.ts)           | 6       | Respuesta aprobada conforme al contrato; sin código de autorización en rechazos; la caída gana sobre todo; 422 con `field_errors`; timeout sin aprobar         |
-| [`api/test/unit/parseChargeRequest.test.ts`](../../api/test/unit/parseChargeRequest.test.ts)             | 8       | Campo faltante contra formato inválido; montos (decimales, límites, centavos no exactos en binario); eco nulo                                                  |
-| [`api/test/feature/charges.test.ts`](../../api/test/feature/charges.test.ts)                             | 11      | HTTP completo: 201/402/422/400/503/429; los 9 campos; **nada de tarjeta ni titular en los logs**; 404 con envelope; CORS con allowlist; cabeceras de seguridad |
-| [`frontend/src/lib/http/httpRequest.test.ts`](../../frontend/src/lib/http/httpRequest.test.ts)           | 5       | Timeout contra red contra respuesta no JSON                                                                                                                    |
-| [`frontend/src/storage/createStorageSlot.test.ts`](../../frontend/src/storage/createStorageSlot.test.ts) | 5       | Datos corruptos, JSON roto y `localStorage` bloqueado sin romper la app                                                                                        |
-| [`frontend/src/hooks/useZodForm.test.tsx`](../../frontend/src/hooks/useZodForm.test.tsx)                 | 4       | Error asociado al campo, foco al primer error, datos transformados                                                                                             |
-| Componentes (`Button`, `Alert`, `ThemeToggle`, `NotFound`, `DevCatalog`)                                 | 9       | Accesibilidad observable: roles, nombres, estados de carga, teclado                                                                                            |
+| Archivo                                                                                                  | Pruebas                     | Qué fija                                                                                                                                                       |
+| -------------------------------------------------------------------------------------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`api/test/unit/scenarios.test.ts`](../../api/test/unit/scenarios.test.ts)                               | 15                          | Cada escenario de la tabla; éxito aprobado después de 12/26; fallas del sistema antes que el vencimiento; vigencia hasta el último instante del mes            |
+| [`api/test/unit/createChargeService.test.ts`](../../api/test/unit/createChargeService.test.ts)           | 6                           | Respuesta aprobada conforme al contrato; sin código de autorización en rechazos; la caída gana sobre todo; 422 con `field_errors`; timeout sin aprobar         |
+| [`api/test/unit/parseChargeRequest.test.ts`](../../api/test/unit/parseChargeRequest.test.ts)             | 8                           | Campo faltante contra formato inválido; montos (decimales, límites, centavos no exactos en binario); eco nulo                                                  |
+| [`api/test/feature/charges.test.ts`](../../api/test/feature/charges.test.ts)                             | 11                          | HTTP completo: 201/402/422/400/503/429; los 9 campos; **nada de tarjeta ni titular en los logs**; 404 con envelope; CORS con allowlist; cabeceras de seguridad |
+| [`frontend/src/lib/http/httpRequest.test.ts`](../../frontend/src/lib/http/httpRequest.test.ts)           | 5                           | Timeout contra red contra respuesta no JSON                                                                                                                    |
+| [`frontend/src/storage/createStorageSlot.test.ts`](../../frontend/src/storage/createStorageSlot.test.ts) | 5                           | Datos corruptos, JSON roto y `localStorage` bloqueado sin romper la app                                                                                        |
+| [`frontend/src/hooks/useZodForm.test.tsx`](../../frontend/src/hooks/useZodForm.test.tsx)                 | 4                           | Error asociado al campo, foco al primer error, datos transformados                                                                                             |
+| [`api/postman/`](../../api/postman/README.md) (Newman, folder `Smoke`)                                   | 13 requests / 98 aserciones | El contrato **contra el servidor real**: los campos obligatorios en toda respuesta de cobro, los escenarios, envelope en salud y 404                           |
+| Componentes (`Button`, `Alert`, `ThemeToggle`, `NotFound`, `DevCatalog`)                                 | 9                           | Accesibilidad observable: roles, nombres, estados de carga, teclado                                                                                            |
 
 ## Cómo correrlas
 
@@ -54,6 +55,7 @@ npm test                                   # todas (api + frontend)
 npm test -w @snail-race/api                # solo el API
 npm test -w @snail-race/web                # solo el frontend
 npm run check                              # type-check + lint + formato + pruebas (lo que corre antes de cada commit)
+npm run test:postman -w @snail-race/api    # Smoke de Postman con Newman contra el API en :3000
 ```
 
-> ⏳ E2E con Cypress (`npm run test:e2e`) y la colección de Postman llegan en sus propias ramas.
+> ⏳ E2E con Cypress (`npm run test:e2e`) llega en su propia rama.

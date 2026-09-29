@@ -2,7 +2,7 @@
 
 > **Audiencia:** quien revisa la entrega.
 > **Propósito:** la **única fuente de verdad** de qué está terminado. Una fila solo pasa a ✅ cuando tiene evidencia enlazada: una prueba automatizada o el archivo que la implementa. Se actualiza en el mismo commit que cambia el código.
-> **Última actualización:** 2026-09-28, 20:51. SnailPay (API) terminado; frontend con la base técnica y el sistema visual. Faltan registro/login, dashboard y recarga.
+> **Última actualización:** 2026-09-28, 21:00. SnailPay (API) terminado; frontend con la base técnica y el sistema visual. Faltan registro/login, dashboard y recarga.
 
 Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta) · ⏳ pendiente · ❌ fuera de alcance / no se hará
 
@@ -59,7 +59,7 @@ Leyenda: ✅ terminado con evidencia · 🟡 parcial (el detalle dice qué falta
 | E-01   | PDF de respuesta                      | ⏳     | —                                                                                                                                          |
 | E-02   | Instrucciones para ejecutar           | ✅     | [ejecutar local](../06-operacion/ejecutar-local.md), comprobado con `npm run dev`                                                          |
 | E-03   | Instrucciones de pruebas              | ✅     | [estrategia de pruebas](../05-calidad-y-pruebas/estrategia-de-pruebas.md#cómo-correrlas)                                                   |
-| E-04   | Reproducir las respuestas de SnailPay | 🟡     | [escenarios](../03-snailpay/escenarios.md) implementados y reproducibles con `curl`. Falta la colección de Postman                         |
+| E-04   | Reproducir las respuestas de SnailPay | ✅     | [escenarios](../03-snailpay/escenarios.md) con `curl` y [colección Postman](../../api/postman/README.md) (Smoke con Newman: 98 aserciones) |
 | E-05   | Repositorio público en GitHub         | ⏳     | —                                                                                                                                          |
 | AD-01  | Aplicación desplegada                 | ⏳     | ADR 0008                                                                                                                                   |
 | AD-02  | Propuesta de base de datos            | 🟡     | [propuesta](../07-entrega/propuesta-base-de-datos.md) en borrador                                                                          |

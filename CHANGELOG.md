@@ -2,6 +2,12 @@
 
 Registro de cambios de la documentación y de las decisiones, en orden de fecha descendente. Los cambios de código quedan en el historial de git.
 
+## 2026-09-28 (noche) — colección Postman de SnailPay
+
+- 📮 Colección y environments en `api/postman/` según el estándar del ecosistema, adaptado a una pasarela simulada (sin auth, sin tenant, sin sintético).
+- ✅ Smoke con Newman: 13 requests y 98 aserciones en verde contra el API real. E-04 pasa a terminado.
+- **Reflejado en:** [escenarios](docs/03-snailpay/escenarios.md) · [estado](docs/01-alcance/estado.md) · [pruebas](docs/05-calidad-y-pruebas/estrategia-de-pruebas.md) · [ADR 0005](docs/02-arquitectura/adr/0005-simulacion-de-fallos.md)
+
 ## 2026-09-28 (noche) — puesta al día tras las primeras ramas de código
 
 - 💳 **SnailPay implementado**: 14 escenarios, contrato en `shared/` y 40 pruebas. ADR 0004 y 0005 **aceptados**.
